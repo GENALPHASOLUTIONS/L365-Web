@@ -54,36 +54,96 @@ export default function Home() {
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '50px 50px', pointerEvents: 'none' }} />
 
         <div className="wrap" style={{ position: 'relative', zIndex: 1, paddingTop: 120, paddingBottom: 100 }}>
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22,1,0.36,1] }}>
-            <span className="badge badge-orange" style={{ marginBottom: '1.5rem', display: 'inline-flex' }}>
-              CL Synergy Group · Est. 2004
-            </span>
+          {/* Two-column: text left, logo right */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '4rem', alignItems: 'center' }}>
 
-            <h1 style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontWeight: 900, fontSize: 'clamp(2.8rem, 6vw, 5rem)', color: '#fff', lineHeight: 1.05, marginBottom: '1.5rem', maxWidth: 700 }}>
-              Sri Lanka's Premier<br />
-              <span className="text-shimmer">Freight Forwarder</span>
-            </h1>
+            <div>
+              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22,1,0.36,1] }}>
+                <span className="badge badge-orange" style={{ marginBottom: '1.5rem', display: 'inline-flex' }}>
+                  CL Synergy Group · Est. 2004
+                </span>
 
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: 540, marginBottom: '2.5rem' }}>
-              Sea, air, customs, warehousing and end-to-end supply chain solutions — delivered with 20+ years of precision and trust.
-            </p>
+                <h1 style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontWeight: 900, fontSize: 'clamp(2.8rem, 6vw, 5rem)', color: '#fff', lineHeight: 1.05, marginBottom: '1.5rem', maxWidth: 700 }}>
+                  Sri Lanka's Premier<br />
+                  <span className="text-shimmer">Freight Forwarder</span>
+                </h1>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-              <Link to="/services" className="btn btn-orange">Explore Services <ArrowRight size={15} /></Link>
-              <Link to="/contact"  className="btn btn-outline-white">Get a Free Quote</Link>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1.1rem', lineHeight: 1.7, maxWidth: 540, marginBottom: '2.5rem' }}>
+                  Sea, air, customs, warehousing and end-to-end supply chain solutions — delivered with 20+ years of precision and trust.
+                </p>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+                  <Link to="/services" className="btn btn-orange">Explore Services <ArrowRight size={15} /></Link>
+                  <Link to="/contact"  className="btn btn-outline-white">Get a Free Quote</Link>
+                </div>
+              </motion.div>
+
+              {/* Stats row */}
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', marginTop: '4rem', background: 'rgba(255,255,255,0.1)', borderRadius: 12, overflow: 'hidden', maxWidth: 580 }}>
+                {stats.map(s => (
+                  <div key={s.num} style={{ padding: '1.25rem 1rem', background: 'rgba(255,255,255,0.05)', textAlign: 'center' }}>
+                    <div style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: '2rem', color: '#E8541A', lineHeight: 1 }}>{s.num}</div>
+                    <div style={{ fontSize: '.7rem', color: 'rgba(255,255,255,0.5)', marginTop: '.4rem', fontWeight: 500 }}>{s.sub}</div>
+                  </div>
+                ))}
+              </motion.div>
             </div>
-          </motion.div>
 
-          {/* Stats row */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
-            style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', marginTop: '5rem', background: 'rgba(255,255,255,0.1)', borderRadius: 12, overflow: 'hidden', maxWidth: 680 }}>
-            {stats.map(s => (
-              <div key={s.num} style={{ padding: '1.25rem 1rem', background: 'rgba(255,255,255,0.05)', textAlign: 'center' }}>
-                <div style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: '2rem', color: '#E8541A', lineHeight: 1 }}>{s.num}</div>
-                <div style={{ fontSize: '.7rem', color: 'rgba(255,255,255,0.5)', marginTop: '.4rem', fontWeight: 500 }}>{s.sub}</div>
+            {/* Logo showcase — right side */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.22,1,0.36,1] }}
+              className="float"
+              style={{ flexShrink: 0, position: 'relative' }}
+            >
+              {/* Outer glow ring — orange */}
+              <motion.div
+                animate={{ scale: [1, 1.08, 1], opacity: [0.25, 0.55, 0.25] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ position: 'absolute', inset: -20, borderRadius: '50%', border: '1.5px solid rgba(232,84,26,0.5)', pointerEvents: 'none' }}
+              />
+              {/* Middle ring — teal */}
+              <motion.div
+                animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.45, 0.2] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
+                style={{ position: 'absolute', inset: -8, borderRadius: '50%', border: '1px solid rgba(14,155,155,0.5)', pointerEvents: 'none' }}
+              />
+
+              {/* Logo card */}
+              <div style={{
+                width: 220, height: 220, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.97)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 0 0 3px rgba(232,84,26,0.3), 0 24px 80px rgba(0,0,0,0.35), 0 0 60px rgba(232,84,26,0.15)',
+                position: 'relative', overflow: 'hidden',
+              }}>
+                {/* Inner shimmer sweep */}
+                <motion.div
+                  animate={{ x: [-300, 300] }}
+                  transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 2, ease: 'easeInOut' }}
+                  style={{
+                    position: 'absolute', top: 0, bottom: 0, width: 80,
+                    background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                    pointerEvents: 'none',
+                  }}
+                />
+                <img src="/logo.png" alt="Logistics 365" style={{ width: 160, height: 'auto', objectFit: 'contain', position: 'relative', zIndex: 1 }} />
               </div>
-            ))}
-          </motion.div>
+
+              {/* Small accent badges */}
+              <motion.div
+                animate={{ y: [0, -6, 0] }} transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ position: 'absolute', top: 10, right: -30, background: '#E8541A', color: '#fff', borderRadius: 8, padding: '5px 10px', fontSize: '.68rem', fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 4px 14px rgba(232,84,26,0.45)' }}>
+                20+ Years
+              </motion.div>
+              <motion.div
+                animate={{ y: [0, 6, 0] }} transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+                style={{ position: 'absolute', bottom: 16, left: -36, background: '#0E9B9B', color: '#fff', borderRadius: 8, padding: '5px 10px', fontSize: '.68rem', fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, whiteSpace: 'nowrap', boxShadow: '0 4px 14px rgba(14,155,155,0.45)' }}>
+                150+ Countries
+              </motion.div>
+            </motion.div>
+          </div>
         </div>
 
         {/* Bottom fade */}

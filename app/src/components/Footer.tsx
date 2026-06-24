@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 export default function Footer() {
   return (
@@ -12,7 +13,26 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <img src="/logo.png" alt="Logistics 365" style={{ height: 46, width: 'auto', objectFit: 'contain', marginBottom: '1.25rem' }} />
+            <Link to="/" style={{ display: 'inline-block', marginBottom: '1.25rem' }}>
+              <motion.div
+                whileHover={{ scale: 1.04 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                style={{
+                  position: 'relative', display: 'inline-block',
+                  padding: '8px 14px', borderRadius: 10,
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: '0 0 24px rgba(232,84,26,0.1)',
+                }}
+              >
+                <motion.div
+                  animate={{ opacity: [0.3, 0.7, 0.3] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ position: 'absolute', inset: -2, borderRadius: 12, border: '1px solid rgba(232,84,26,0.25)', pointerEvents: 'none' }}
+                />
+                <img src="/logo.png" alt="Logistics 365" style={{ height: 48, width: 'auto', objectFit: 'contain', display: 'block' }} />
+              </motion.div>
+            </Link>
             <p style={{ fontSize: '.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
               Sri Lanka's premier freight forwarder. A subsidiary of CL Synergy Limited — serving global trade since 2004.
             </p>

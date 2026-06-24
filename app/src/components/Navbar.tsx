@@ -47,9 +47,38 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={!solid ? { background: 'rgba(255,255,255,0.95)', borderRadius: 8, padding: '6px 12px' } : {}}>
-            <img src="/logo.png" alt="Logistics 365" style={{ height: 44, width: 'auto', objectFit: 'contain' }} />
-          </div>
+          <motion.div
+            whileHover={{ scale: 1.04 }}
+            transition={{ type: 'spring', stiffness: 320, damping: 20 }}
+            style={{
+              position: 'relative',
+              padding: solid ? '6px 14px' : '8px 16px',
+              borderRadius: 10,
+              background: solid ? 'transparent' : 'rgba(255,255,255,0.97)',
+              boxShadow: solid
+                ? 'none'
+                : '0 4px 24px rgba(232,84,26,0.18), 0 0 0 1px rgba(232,84,26,0.12)',
+              transition: 'background .3s, box-shadow .3s',
+            }}
+          >
+            {/* Glow ring — only on transparent nav (hero) */}
+            {!solid && (
+              <motion.div
+                animate={{ opacity: [0.4, 0.8, 0.4] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  position: 'absolute', inset: -3, borderRadius: 13,
+                  border: '1.5px solid rgba(232,84,26,0.35)',
+                  pointerEvents: 'none',
+                }}
+              />
+            )}
+            <img
+              src="/logo.png"
+              alt="Logistics 365"
+              style={{ height: solid ? 46 : 52, width: 'auto', objectFit: 'contain', display: 'block' }}
+            />
+          </motion.div>
         </Link>
 
         {/* Desktop links */}
