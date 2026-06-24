@@ -2,21 +2,51 @@
 
 :root {
   --orange: #E8541A;
-  --teal: #0E9B9B;
-  --green: #7BC14A;
-  --dark: #0F1923;
-  --dark2: #152436;
+  --teal:   #0E9B9B;
+  --green:  #7BC14A;
+  --dark:   #0D1B2A;
+  --dark2:  #152436;
+  --offwhite: #F6F5F2;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--offwhite);
+  color: #1a2535;
+  cursor: none;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #fff;
 }
 
-/* Reliable centering — Tailwind v4 mx-auto broken in block parents */
+/* ── Custom cursor ─────────────────────────────── */
+.cursor-dot {
+  width: 8px; height: 8px;
+  background: var(--orange);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform .1s, background .2s;
+}
+.cursor-ring {
+  width: 34px; height: 34px;
+  border: 2px solid rgba(14,155,155,.45);
+  border-radius: 50%;
+  position: fixed; pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: all .15s ease;
+}
+.cursor-ring.hover { width: 52px; height: 52px; border-color: var(--orange); background: rgba(232,84,26,.07); }
+.cursor-dot.hover  { background: var(--teal); transform: translate(-50%,-50%) scale(1.5); }
+
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--offwhite); }
+::-webkit-scrollbar-thumb { background: var(--dark); border-radius: 3px; }
+
+/* ── Centering wrapper ─────────────────────────── */
 .wrap {
   width: 100%;
   max-width: 1200px;
@@ -26,151 +56,99 @@ body {
   padding-right: 2.5rem;
 }
 
-/* ─── Nav hover underline effect ─── */
-.nav-link {
-  position: relative;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #374151;
-  padding: 0.5rem 0;
-  transition: color 0.2s;
+/* ── Card ──────────────────────────────────────── */
+.card {
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid rgba(14,155,155,.08);
+  box-shadow: 0 4px 24px rgba(13,27,42,.06);
+  transition: box-shadow .25s, transform .25s;
 }
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--orange);
-  border-radius: 2px;
-  transition: width 0.25s ease;
+.card:hover {
+  box-shadow: 0 16px 48px rgba(13,27,42,.13);
+  transform: translateY(-4px);
 }
-.nav-link:hover { color: var(--orange); }
-.nav-link:hover::after,
-.nav-link.active::after { width: 100%; }
-.nav-link.active { color: var(--orange); }
 
-/* ─── Services mega dropdown ─── */
+/* ── Nav link underline ────────────────────────── */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ''; position: absolute; bottom: -2px; left: 0;
+  width: 0; height: 2px; background: var(--orange);
+  transition: width .3s ease;
+}
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+/* ── Stripe pattern ────────────────────────────── */
+.stripe-bg {
+  background-color: var(--dark);
+  background-image: repeating-linear-gradient(
+    -45deg, transparent, transparent 6px,
+    rgba(255,255,255,.03) 6px, rgba(255,255,255,.03) 12px
+  );
+}
+
+/* ── Gradient text ─────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(110deg, var(--orange) 20%, var(--teal));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── Glow pulse ────────────────────────────────── */
+@keyframes pulse-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(232,84,26,.5); }
+  50%      { box-shadow: 0 0 0 12px rgba(232,84,26,0); }
+}
+.glow-btn { animation: pulse-glow 1.8s ease-in-out infinite; }
+
+/* ── Float ─────────────────────────────────────── */
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.float { animation: float 4s ease-in-out infinite; }
+
+/* ── Orbit rings for logo ──────────────────────── */
+@keyframes orbit1 { from{transform:rotateX(70deg) rotateZ(0deg)} to{transform:rotateX(70deg) rotateZ(360deg)} }
+@keyframes orbit2 { from{transform:rotateX(60deg) rotateY(20deg) rotateZ(360deg)} to{transform:rotateX(60deg) rotateY(20deg) rotateZ(0deg)} }
+
+/* ── Ticker ────────────────────────────────────── */
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.ticker-inner { animation: ticker 30s linear infinite; }
+.ticker-inner:hover { animation-play-state: paused; }
+
+/* ── Mega dropdown ─────────────────────────────── */
 .mega-dropdown {
   position: absolute;
-  top: calc(100% + 12px);
+  top: calc(100% + 14px);
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
   width: 680px;
   background: #fff;
   border-radius: 1.25rem;
-  box-shadow: 0 20px 60px -10px rgba(15,25,35,0.18), 0 0 0 1px rgba(0,0,0,0.06);
+  box-shadow: 0 20px 60px -10px rgba(13,27,42,.18), 0 0 0 1px rgba(0,0,0,.06);
   padding: 1.5rem;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
+  opacity: 0; visibility: hidden;
+  transition: all .22s cubic-bezier(.4,0,.2,1);
   z-index: 200;
 }
-.mega-trigger:hover .mega-dropdown,
-.mega-dropdown:hover {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
+.mega-trigger:hover .mega-dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 .mega-dropdown::before {
-  content: '';
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 6px solid transparent;
-  border-bottom: 6px solid #fff;
-  filter: drop-shadow(0 -2px 2px rgba(0,0,0,0.06));
+  content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  border: 6px solid transparent; border-bottom: 6px solid #fff;
+  filter: drop-shadow(0 -2px 2px rgba(0,0,0,.05));
 }
-.service-item {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 0.625rem;
-  transition: all 0.15s;
-  cursor: pointer;
-  color: #374151;
-  font-size: 0.83rem;
-  font-weight: 500;
+.svc-item {
+  display: flex; align-items: center; gap: .625rem;
+  padding: .55rem .75rem; border-radius: .625rem;
+  transition: all .15s; color: #374151;
+  font-size: .82rem; font-weight: 500; cursor: pointer;
 }
-.service-item:hover {
-  background: #fff7f3;
-  color: var(--orange);
-}
-.service-cat-title {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #9CA3AF;
-  padding: 0 0.75rem;
-  margin-bottom: 0.25rem;
-}
+.svc-item:hover { background: #fff7f3; color: var(--orange); }
+.svc-cat { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #9CA3AF; padding: 0 .75rem; margin-bottom: .2rem; }
 
-/* ─── Page hero gradient overlays ─── */
-.hero-overlay {
-  background: linear-gradient(135deg, rgba(15,25,35,0.97) 0%, rgba(15,25,35,0.85) 50%, rgba(14,155,155,0.25) 100%);
-}
-
-/* ─── Glassy card ─── */
-.glass-card {
-  background: rgba(255,255,255,0.07);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 1rem;
-}
-
-/* ─── Announcement bar scroll text ─── */
-@keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.ticker-inner { animation: ticker 28s linear infinite; }
-.ticker-inner:hover { animation-play-state: paused; }
-
-/* ─── Orbit animation for logo ─── */
-@keyframes orbit1 {
-  from { transform: rotateX(70deg) rotateZ(0deg); }
-  to   { transform: rotateX(70deg) rotateZ(360deg); }
-}
-@keyframes orbit2 {
-  from { transform: rotateX(60deg) rotateY(20deg) rotateZ(360deg); }
-  to   { transform: rotateX(60deg) rotateY(20deg) rotateZ(0deg); }
-}
-
-/* ─── Stat counter glow ─── */
-.stat-glow { text-shadow: 0 0 30px currentColor; }
-
-/* ─── Section divider wave ─── */
-.wave-bottom { position: absolute; bottom: -1px; left: 0; right: 0; }
-
-/* ─── Card hover lift ─── */
-.card-lift {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.card-lift:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 50px -12px rgba(0,0,0,0.15);
-}
-
-/* ─── Input focus glow ─── */
+/* ── Input ─────────────────────────────────────── */
 .input-field {
-  width: 100%;
-  border: 1.5px solid #E5E7EB;
-  border-radius: 0.75rem;
-  padding: 0.875rem 1rem;
-  font-size: 0.875rem;
-  color: #111827;
-  background: #FAFAFA;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  outline: none;
+  width: 100%; border: 1.5px solid #E5E7EB; border-radius: .75rem;
+  padding: .875rem 1rem; font-size: .875rem; color: #111827;
+  background: #FAFAFA; outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
-.input-field:focus {
-  border-color: var(--teal);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(14,155,155,0.12);
-}
+.input-field:focus { border-color: var(--teal); background: #fff; box-shadow: 0 0 0 3px rgba(14,155,155,.12); }
 .input-field::placeholder { color: #9CA3AF; }

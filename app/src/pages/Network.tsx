@@ -1,273 +1,250 @@
-import { motion } from 'framer-motion'
-import SEO from '../components/SEO'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { ArrowRight, MapPin, Clock, Ship, Globe } from 'lucide-react'
 
-const tradeRoutes = [
-  { from: 'Colombo', to: 'Dubai', mode: '🚢 / ✈️', transit: '3–5 days air / 10–14 days sea', desc: 'Middle East gateway — high-volume trade corridor for garments, electronics and general cargo.' },
-  { from: 'Colombo', to: 'Singapore', mode: '🚢 / ✈️', transit: '2–3 days air / 5–7 days sea', desc: 'Asia Pacific transshipment hub — connecting Sri Lanka to SE Asia, China, Japan and Australia.' },
-  { from: 'Colombo', to: 'Rotterdam', mode: '🚢', transit: '22–26 days sea', desc: 'Europe\'s largest port — gateway to Germany, Netherlands, UK and the rest of the EU market.' },
-  { from: 'Colombo', to: 'Shanghai', mode: '🚢 / ✈️', transit: '4–6 days air / 12–16 days sea', desc: 'China\'s leading export hub — sourcing, import and transshipment connections across East Asia.' },
-  { from: 'Colombo', to: 'Los Angeles', mode: '🚢 / ✈️', transit: '1–2 days air / 24–28 days sea', desc: 'US West Coast hub — connecting Sri Lankan exporters to the vast North American consumer market.' },
-  { from: 'Colombo', to: 'Mumbai', mode: '🚢 / ✈️', transit: '1 day air / 4–6 days sea', desc: 'South Asia powerhouse — India\'s financial capital with direct access to the world\'s 5th largest economy.' },
+function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: '-60px' })
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.65, delay, ease: 'easeOut' }}
+      className={className}>
+      {children}
+    </motion.div>
+  )
+}
+
+const offices = [
+  { city: 'Colombo',   country: 'Sri Lanka (HQ)', flag: '🇱🇰', color: '#E8541A', desc: '06th Floor, Iceland Business Centre, Colombo 03', phone: '+94 11 530 0250', email: 'info@log-365.com' },
+  { city: 'Dubai',     country: 'UAE',             flag: '🇦🇪', color: '#0E9B9B', desc: 'Dubai, United Arab Emirates', phone: '', email: '' },
+  { city: 'Singapore', country: 'Singapore',       flag: '🇸🇬', color: '#7BC14A', desc: 'Singapore — Asia Trade Hub', phone: '', email: '' },
 ]
 
-const advantages = [
-  { icon: '🗺️', title: 'Global Coverage', value: '150+', sub: 'Countries reached', color: '#E8541A' },
-  { icon: '🚢', title: 'Shipping Lines', value: '50+', sub: 'Carrier partnerships', color: '#0E9B9B' },
-  { icon: '✈️', title: 'Airline Partners', value: '30+', sub: 'Air cargo networks', color: '#7BC14A' },
-  { icon: '🏭', title: 'Industry Experience', value: '20+', sub: 'Years via CL Synergy', color: '#E8541A' },
+const corridors = [
+  { from: 'Colombo', to: 'Dubai',     transit: '10–14 days', mode: 'Sea', icon: Ship },
+  { from: 'Colombo', to: 'Singapore', transit: '3–5 days',   mode: 'Sea', icon: Ship },
+  { from: 'Colombo', to: 'Shanghai',  transit: '18–22 days', mode: 'Sea', icon: Ship },
+  { from: 'Colombo', to: 'Rotterdam', transit: '24–28 days', mode: 'Sea', icon: Ship },
+  { from: 'Colombo', to: 'LA/LB',    transit: '20–25 days', mode: 'Sea', icon: Ship },
+  { from: 'Colombo', to: 'Mumbai',    transit: '3–5 days',   mode: 'Sea', icon: Ship },
 ]
 
 const partners = [
-  { name: 'MSC', category: 'Shipping Line' },
-  { name: 'Maersk', category: 'Shipping Line' },
-  { name: 'CMA CGM', category: 'Shipping Line' },
-  { name: 'Evergreen', category: 'Shipping Line' },
-  { name: 'OOCL', category: 'Shipping Line' },
-  { name: 'Emirates SkyCargo', category: 'Air Cargo' },
-  { name: 'Qatar Airways Cargo', category: 'Air Cargo' },
-  { name: 'SriLankan Cargo', category: 'Air Cargo' },
-  { name: 'FIATA', category: 'Association' },
-  { name: 'IATA', category: 'Association' },
-  { name: 'WCA Network', category: 'Agent Network' },
-  { name: 'CILTSL', category: 'Association' },
+  { name: 'Maersk Line',        cat: 'Ocean Carrier' },
+  { name: 'MSC',                cat: 'Ocean Carrier' },
+  { name: 'CMA CGM',            cat: 'Ocean Carrier' },
+  { name: 'Emirates SkyCargo',  cat: 'Air Carrier' },
+  { name: 'Sri Lankan Cargo',   cat: 'Air Carrier' },
+  { name: 'Qatar Airways Cargo',cat: 'Air Carrier' },
+  { name: 'WCA Network',        cat: 'Agent Network' },
+  { name: 'FIATA',              cat: 'Industry Body' },
+  { name: 'SLAFFA',             cat: 'Industry Body' },
 ]
-
-const categoryColors: Record<string, string> = {
-  'Shipping Line': '#0E9B9B',
-  'Air Cargo': '#E8541A',
-  'Association': '#7BC14A',
-  'Agent Network': '#0E9B9B',
-}
 
 export default function Network() {
   return (
-    <>
-      <SEO title="Global Network" canonical="/network"
-        description="Logistics365 global network spans 150+ countries with trade routes from Colombo to Dubai, Singapore, Europe, China, and USA via trusted carrier and agent partnerships."
-        keywords="logistics network Sri Lanka, global freight network, Colombo shipping routes, Sri Lanka freight forwarding" />
+    <div style={{ background: '#F6F5F2' }}>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden" style={{ minHeight: '400px', display: 'flex', alignItems: 'center' }}>
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80')" }} />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(15,25,35,0.97) 0%, rgba(15,25,35,0.85) 50%, rgba(14,155,155,0.2) 100%)' }} />
-        <div className="relative z-10 wrap pt-32 pb-20">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <span className="inline-flex items-center gap-2 bg-[#E8541A]/15 border border-[#E8541A]/25 text-[#E8541A] text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-full mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E8541A] animate-pulse" />
-              Worldwide Reach
+      {/* ── HERO ────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-40 pb-24 px-4"
+        style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #152436 60%, #0D1B2A 100%)' }}>
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20" style={{ background: '#0E9B9B' }} />
+        <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-10" style={{ background: '#E8541A' }} />
+        {/* Animated world grid lines */}
+        <div className="absolute inset-0 opacity-5" style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
+          backgroundSize: '60px 60px'
+        }} />
+        <div className="relative z-10 max-w-5xl mx-auto text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
+              style={{ background: 'rgba(14,155,155,0.15)', color: '#0E9B9B' }}>
+              150+ Countries
             </span>
-            <h1 className="text-5xl md:text-6xl font-black text-white mb-4 leading-tight">
-              Connecting Sri Lanka<br />to the <span className="text-[#0E9B9B]">World</span>
+            <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.08] mb-6">
+              A Truly Global<br /><span style={{ color: '#E8541A' }}>Trade Network</span>
             </h1>
-            <p className="text-gray-300 text-lg max-w-xl">
-              Our global partner network spans 150+ countries — providing seamless freight connections from Colombo to every corner of the globe.
+            <p className="text-lg max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
+              Leveraging the strategic position of the Port of Colombo — one of South Asia's largest transshipment hubs — we connect your cargo to the world.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Network stats */}
-      <section className="bg-white border-b border-gray-100">
-        <div className="wrap py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {advantages.map((a, i) => (
-            <motion.div key={a.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} viewport={{ once: true }}
-              className="text-center">
-              <div className="text-4xl font-black mb-1" style={{ color: a.color }}>{a.value}</div>
-              <div className="font-bold text-gray-900 text-sm">{a.title}</div>
-              <div className="text-gray-400 text-xs mt-0.5">{a.sub}</div>
-            </motion.div>
+      {/* ── TRADE STATS ─────────────────────────────────────── */}
+      <section style={{ background: '#0D1B2A' }} className="py-12">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4">
+          {[
+            { v: '150+',   l: 'Countries Reached' },
+            { v: '500+',   l: 'Shipping Partners' },
+            { v: '6',      l: 'Major Trade Lanes' },
+            { v: '24/7',   l: 'Port Operations' },
+          ].map((s, i) => (
+            <FadeUp key={s.l} delay={i * 0.1}>
+              <div className="flex flex-col items-center text-center py-8 px-4 border-r border-white/10 last:border-0">
+                <div className="text-4xl font-extrabold" style={{ color: '#E8541A' }}>{s.v}</div>
+                <div className="text-xs mt-2 font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>{s.l}</div>
+              </div>
+            </FadeUp>
           ))}
         </div>
       </section>
 
-      {/* World map visual */}
-      <section className="py-20 bg-[#0F1923] relative overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=1920&q=80')" }} />
-        <div className="relative z-10 wrap">
-          <div className="text-center mb-12">
-            <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-2">Global Presence</p>
-            <h2 className="text-3xl md:text-4xl font-black text-white">Our Strategic Position</h2>
-            <p className="text-gray-400 mt-2 max-w-lg" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-              Sri Lanka sits at the crossroads of major East-West trade routes, making Colombo one of the world's top transshipment hubs.
-            </p>
-          </div>
+      {/* ── VISUAL WORLD MAP — SVG ───────────────────────────── */}
+      <section className="py-20 px-4 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#E8541A' }}>Coverage</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold mt-3" style={{ color: '#0D1B2A' }}>Trade Lane Map</h2>
+          </FadeUp>
+          <div className="rounded-3xl overflow-hidden" style={{ background: '#0D1B2A', padding: '2rem' }}>
+            <svg viewBox="0 0 800 400" className="w-full" style={{ maxHeight: '400px' }}>
+              {/* World map simplified paths */}
+              <rect width="800" height="400" fill="#0D1B2A" />
+              {/* Grid */}
+              {[80,160,240,320,400,480,560,640,720].map(x => <line key={x} x1={x} y1="0" x2={x} y2="400" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />)}
+              {[80,160,240,320].map(y => <line key={y} x1="0" y1={y} x2="800" y2={y} stroke="rgba(255,255,255,0.04)" strokeWidth="1" />)}
+              {/* Equator */}
+              <line x1="0" y1="200" x2="800" y2="200" stroke="rgba(255,255,255,0.06)" strokeWidth="1" strokeDasharray="4 4" />
 
-          {/* SVG World map schematic */}
-          <div className="relative rounded-3xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <svg viewBox="0 0 900 420" className="w-full" style={{ height: '380px' }}>
-              {/* Background grid */}
-              {Array.from({ length: 9 }).map((_, i) => (
-                <line key={`v${i}`} x1={i * 112} y1="0" x2={i * 112} y2="420" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-              ))}
-              {Array.from({ length: 5 }).map((_, i) => (
-                <line key={`h${i}`} x1="0" y1={i * 105} x2="900" y2={i * 105} stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
-              ))}
+              {/* OFFICES — real positions mapped to 800x400 */}
+              {/* Colombo: ~80°E 7°N → x≈577 y≈183 */}
+              {/* Dubai: ~55°E 25°N → x≈511 y≈153 */}
+              {/* Singapore: ~104°E 1°N → x≈620 y≈198 */}
+              {/* Shanghai: ~121°E 31°N → x≈657 y≈145 */}
+              {/* Rotterdam: ~4°E 52°N → x≈345 y≈101 */}
+              {/* LA: ~118°W 34°N → x≈88 y≈142 */}
+              {/* Mumbai: ~73°E 19°N → x≈561 y≈160 */}
 
-              {/* Route lines (animated dashes) */}
-              {/* Colombo → Dubai */}
-              <line x1="560" y1="240" x2="490" y2="195" stroke="#E8541A" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="20;0" dur="2s" repeatCount="indefinite" />
-              </line>
-              {/* Colombo → Singapore */}
-              <line x1="560" y1="240" x2="680" y2="250" stroke="#0E9B9B" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="20;0" dur="2.5s" repeatCount="indefinite" />
-              </line>
-              {/* Colombo → Mumbai */}
-              <line x1="560" y1="240" x2="530" y2="210" stroke="#7BC14A" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="20;0" dur="1.8s" repeatCount="indefinite" />
-              </line>
-              {/* Colombo → Shanghai */}
-              <line x1="560" y1="240" x2="730" y2="175" stroke="#E8541A" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="20;0" dur="3s" repeatCount="indefinite" />
-              </line>
-              {/* Colombo → Rotterdam */}
-              <line x1="560" y1="240" x2="290" y2="130" stroke="#0E9B9B" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="20;0" dur="4s" repeatCount="indefinite" />
-              </line>
-              {/* Colombo → Los Angeles */}
-              <line x1="560" y1="240" x2="100" y2="200" stroke="#7BC14A" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.6">
-                <animate attributeName="stroke-dashoffset" values="20;0" dur="5s" repeatCount="indefinite" />
-              </line>
-
-              {/* Destination nodes */}
+              {/* Dashed route lines from Colombo */}
               {[
-                { x: 490, y: 195, label: 'Dubai', flag: '🇦🇪', color: '#E8541A' },
-                { x: 680, y: 250, label: 'Singapore', flag: '🇸🇬', color: '#0E9B9B' },
-                { x: 530, y: 210, label: 'Mumbai', flag: '🇮🇳', color: '#7BC14A' },
-                { x: 730, y: 175, label: 'Shanghai', flag: '🇨🇳', color: '#E8541A' },
-                { x: 290, y: 130, label: 'Rotterdam', flag: '🇳🇱', color: '#0E9B9B' },
-                { x: 100, y: 200, label: 'Los Angeles', flag: '🇺🇸', color: '#7BC14A' },
-              ].map(node => (
-                <g key={node.label}>
-                  <circle cx={node.x} cy={node.y} r="22" fill="rgba(255,255,255,0.08)" stroke={node.color} strokeWidth="1.5" />
-                  <circle cx={node.x} cy={node.y} r="22" fill="transparent" stroke={node.color} strokeWidth="1.5" opacity="0.4">
-                    <animate attributeName="r" values="22;30;22" dur="3s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" values="0.4;0;0.4" dur="3s" repeatCount="indefinite" />
-                  </circle>
-                  <text x={node.x} y={node.y + 5} textAnchor="middle" fontSize="14" fill="white">{node.flag}</text>
-                  <text x={node.x} y={node.y + 38} textAnchor="middle" fontSize="9" fill="rgba(255,255,255,0.7)" fontWeight="600">{node.label}</text>
+                [577,183, 511,153],
+                [577,183, 620,198],
+                [577,183, 657,145],
+                [577,183, 345,101],
+                [577,183, 88,142],
+                [577,183, 561,160],
+              ].map(([x1,y1,x2,y2], i) => (
+                <motion.line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+                  stroke="rgba(232,84,26,0.5)" strokeWidth="1.5" strokeDasharray="6 3"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: 1.5, delay: i * 0.2 }} />
+              ))}
+
+              {/* Office nodes */}
+              {[
+                { x: 577, y: 183, label: 'Colombo', color: '#E8541A', main: true },
+                { x: 511, y: 153, label: 'Dubai',     color: '#0E9B9B', main: false },
+                { x: 620, y: 198, label: 'Singapore', color: '#7BC14A', main: false },
+                { x: 657, y: 145, label: 'Shanghai',  color: 'rgba(255,255,255,0.5)', main: false },
+                { x: 345, y: 101, label: 'Rotterdam', color: 'rgba(255,255,255,0.5)', main: false },
+                { x: 88,  y: 142, label: 'Los Angeles', color: 'rgba(255,255,255,0.5)', main: false },
+                { x: 561, y: 160, label: 'Mumbai',    color: 'rgba(255,255,255,0.5)', main: false },
+              ].map(n => (
+                <g key={n.label}>
+                  {n.main && <circle cx={n.x} cy={n.y} r="16" fill={n.color} opacity="0.15" />}
+                  <circle cx={n.x} cy={n.y} r={n.main ? 6 : 4} fill={n.color} />
+                  <text x={n.x} y={n.y - 10} textAnchor="middle" fill={n.color} fontSize={n.main ? "10" : "8"} fontWeight="600">{n.label}</text>
                 </g>
               ))}
-
-              {/* Colombo — main hub */}
-              <circle cx="560" cy="240" r="30" fill="rgba(232,84,26,0.15)" stroke="#E8541A" strokeWidth="2" />
-              <circle cx="560" cy="240" r="30" fill="transparent" stroke="#E8541A" strokeWidth="2" opacity="0.3">
-                <animate attributeName="r" values="30;42;30" dur="2s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="560" cy="240" r="8" fill="#E8541A" />
-              <text x="560" y="282" textAnchor="middle" fontSize="10" fill="#E8541A" fontWeight="700">🇱🇰 COLOMBO HQ</text>
             </svg>
           </div>
         </div>
       </section>
 
-      {/* Trade routes */}
-      <section className="py-20 bg-white">
-        <div className="wrap">
-          <div className="text-center mb-12">
-            <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-2">Key Trade Corridors</p>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900">From Colombo to the World</h2>
-            <p className="text-gray-500 mt-2">Regular sailings and flights connecting Sri Lanka to major global trade hubs</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {tradeRoutes.map((r, i) => (
-              <motion.div key={r.to} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} viewport={{ once: true }}
-                className="p-6 rounded-2xl border border-gray-100 hover:shadow-lg hover:border-[#0E9B9B]/20 transition-all card-lift">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#E8541A]" />
-                    <span className="text-sm font-bold text-gray-900">{r.from}</span>
+      {/* ── OFFICES ─────────────────────────────────────────── */}
+      <section className="py-20 px-4" style={{ background: '#F6F5F2' }}>
+        <div className="max-w-7xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#E8541A' }}>Our Presence</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold mt-3" style={{ color: '#0D1B2A' }}>Global Offices</h2>
+          </FadeUp>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {offices.map((o, i) => (
+              <FadeUp key={o.city} delay={i * 0.1}>
+                <div className="card p-8">
+                  <div className="text-4xl mb-4">{o.flag}</div>
+                  <div className="font-extrabold text-xl mb-1" style={{ color: '#0D1B2A' }}>{o.city}</div>
+                  <div className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: o.color }}>{o.country}</div>
+                  <div className="flex items-start gap-2 text-sm text-slate-500 mb-2">
+                    <MapPin size={14} style={{ color: o.color, marginTop: 2, flexShrink: 0 }} /> {o.desc}
                   </div>
-                  <svg className="w-4 h-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#0E9B9B]" />
-                    <span className="text-sm font-bold text-gray-900">{r.to}</span>
-                  </div>
+                  {o.phone && <div className="text-sm text-slate-500 mb-1">📞 {o.phone}</div>}
+                  {o.email && <div className="text-sm text-slate-500">✉️ {o.email}</div>}
                 </div>
-                <div className="flex gap-3 mb-3">
-                  <span className="text-xs bg-[#F8FAFC] border border-gray-100 px-2.5 py-1 rounded-full font-medium text-gray-600">{r.mode}</span>
-                  <span className="text-xs bg-[#F8FAFC] border border-gray-100 px-2.5 py-1 rounded-full font-medium text-gray-600">{r.transit}</span>
-                </div>
-                <p className="text-gray-500 text-sm leading-relaxed">{r.desc}</p>
-              </motion.div>
+              </FadeUp>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Partners */}
-      <section className="py-20 bg-[#F8FAFC]">
-        <div className="wrap">
-          <div className="text-center mb-12">
-            <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-2">Trusted Partners</p>
-            <h2 className="text-3xl md:text-4xl font-black text-gray-900">Our Global Network</h2>
-            <p className="text-gray-500 mt-2">Strong relationships with leading carriers, airlines, and industry associations</p>
+      {/* ── TRADE CORRIDORS ─────────────────────────────────── */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#E8541A' }}>Key Routes</span>
+            <h2 className="text-3xl md:text-4xl font-extrabold mt-3" style={{ color: '#0D1B2A' }}>Major Trade Corridors</h2>
+          </FadeUp>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {corridors.map((c, i) => (
+              <FadeUp key={`${c.from}-${c.to}`} delay={i * 0.07}>
+                <div className="card p-6 flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-extrabold text-sm" style={{ color: '#0D1B2A' }}>{c.from}</span>
+                      <span className="text-gray-300">→</span>
+                      <span className="font-extrabold text-sm" style={{ color: '#E8541A' }}>{c.to}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-slate-500 flex items-center gap-1"><Clock size={10} /> {c.transit}</span>
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: 'rgba(14,155,155,0.1)', color: '#0E9B9B' }}>{c.mode}</span>
+                    </div>
+                  </div>
+                  <c.icon size={28} style={{ color: '#E8541A', opacity: 0.4 }} />
+                </div>
+              </FadeUp>
+            ))}
           </div>
-          <div className="flex flex-wrap justify-center gap-3">
+        </div>
+      </section>
+
+      {/* ── PARTNERS ────────────────────────────────────────── */}
+      <section className="py-20 px-4 stripe-bg">
+        <div className="max-w-7xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#E8541A' }}>Partnerships</span>
+            <h2 className="text-3xl font-extrabold text-white mt-3">Carrier & Agent Network</h2>
+          </FadeUp>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {partners.map((p, i) => (
-              <motion.div key={p.name} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }} viewport={{ once: true }}
-                className="flex items-center gap-2 bg-white border border-gray-200 px-5 py-3 rounded-xl shadow-sm hover:shadow-md hover:border-transparent transition-all card-lift"
-                style={{ '--hover-border': categoryColors[p.category] } as React.CSSProperties}>
-                <span className="w-2 h-2 rounded-full" style={{ background: categoryColors[p.category] }} />
-                <span className="font-bold text-gray-700 text-sm">{p.name}</span>
-                <span className="text-xs text-gray-400">{p.category}</span>
-              </motion.div>
+              <FadeUp key={p.name} delay={i * 0.05}>
+                <div className="rounded-2xl p-5 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div>
+                    <div className="font-bold text-white text-sm">{p.name}</div>
+                    <div className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.45)' }}>{p.cat}</div>
+                  </div>
+                  <Globe size={16} style={{ color: 'rgba(232,84,26,0.6)' }} />
+                </div>
+              </FadeUp>
             ))}
           </div>
-          <div className="mt-8 text-center">
-            <p className="text-gray-400 text-sm">Plus hundreds of trusted local agents across every major trade corridor worldwide</p>
-          </div>
         </div>
       </section>
 
-      {/* Sri Lanka advantage */}
-      <section className="py-20 bg-[#0F1923]">
-        <div className="wrap grid md:grid-cols-2 gap-14 items-center">
-          <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-3">The Sri Lanka Advantage</p>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-5">Gateway to Global Trade</h2>
-            <p className="text-gray-400 leading-relaxed mb-6">
-              Sri Lanka's strategic location at the center of major East-West shipping lanes makes the Port of Colombo one of the world's busiest transshipment hubs — processing over 7 million TEUs annually.
-            </p>
-            <p className="text-gray-400 leading-relaxed mb-8">
-              Our headquarters in Colombo 03 positions us at the heart of this trade ecosystem, giving our clients direct access to competitive freight rates, frequent sailings, and reliable air connections to every corner of the globe.
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Port Colombo Rank', value: '#5 South Asia' },
-                { label: 'Annual TEUs', value: '7M+' },
-                { label: 'Shipping Lines', value: '70+ Calls/Week' },
-                { label: 'Air Connections', value: '60+ Destinations' },
-              ].map(s => (
-                <div key={s.label} className="glass-card p-4">
-                  <div className="text-white font-black text-lg">{s.value}</div>
-                  <div className="text-gray-500 text-xs mt-0.5">{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-            <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=800&q=80"
-              alt="Port of Colombo" className="rounded-2xl shadow-2xl w-full object-cover" style={{ height: '420px' }} />
-          </motion.div>
-        </div>
+      {/* ── CTA ──────────────────────────────────────────────── */}
+      <section className="py-20 px-4 text-center" style={{ background: '#F6F5F2' }}>
+        <FadeUp>
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4" style={{ color: '#0D1B2A' }}>Reach Any Destination</h2>
+          <p className="text-slate-500 max-w-lg mx-auto mb-8">Our network spans 150+ countries. Tell us where you need to go — we'll find the best route.</p>
+          <Link to="/contact" className="glow-btn inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm text-white"
+            style={{ background: '#E8541A' }}>
+            Plan a Shipment <ArrowRight size={16} />
+          </Link>
+        </FadeUp>
       </section>
-
-      {/* CTA */}
-      <section className="py-16 bg-white">
-        <div className="wrap text-center">
-          <h2 className="text-3xl font-black text-gray-900 mb-3">Ship to Any Destination</h2>
-          <p className="text-gray-500 mb-7" style={{ maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
-            Tell us where your cargo needs to go — we'll find the best route, carrier, and solution.
-          </p>
-          <a href="/contact" className="inline-flex items-center gap-2 bg-[#E8541A] text-white px-10 py-4 rounded-full font-black text-lg hover:bg-[#c9440f] hover:shadow-xl hover:shadow-[#E8541A]/25 transition-all hover:-translate-y-0.5">
-            Get a Route Quote →
-          </a>
-        </div>
-      </section>
-    </>
+    </div>
   )
 }
