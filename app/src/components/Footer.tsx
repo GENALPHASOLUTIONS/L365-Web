@@ -36,9 +36,9 @@ export default function Footer() {
             <p style={{ fontSize: '.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
               Sri Lanka's premier freight forwarder. A subsidiary of CL Synergy Limited — serving global trade since 2004.
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
-              <span className="pulse-dot" style={{ width: 7, height: 7, borderRadius: '50%', background: '#7BC14A', display: 'inline-block' }} />
-              <span style={{ fontSize: '.72rem', color: '#7BC14A', fontWeight: 600 }}>24 / 7 / 365 Operations</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.625rem', background: 'rgba(123,193,74,0.12)', border: '1px solid rgba(123,193,74,0.3)', borderRadius: 8, padding: '8px 14px' }}>
+              <span className="pulse-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: '#7BC14A', display: 'inline-block', flexShrink: 0 }} />
+              <span style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontSize: '.8rem', color: '#7BC14A', fontWeight: 700, letterSpacing: '.04em' }}>24 / 7 / 365 Operations</span>
             </div>
           </div>
 

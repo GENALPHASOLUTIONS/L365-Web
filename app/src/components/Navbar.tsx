@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown, Ship, Plane, Truck, FileCheck, Warehouse, Layers, Package, BarChart3, ArrowLeftRight } from 'lucide-react'
 
 const svcGroups = [
-  { cat: 'Ocean & Air',    items: [{ icon: Ship,         label: 'FCL / LCL Sea Freight' }, { icon: Plane,       label: 'Air Freight' },         { icon: ArrowLeftRight, label: 'Transshipment' }] },
-  { cat: 'Land & Customs', items: [{ icon: Truck,        label: 'Land Transport' },         { icon: FileCheck,   label: 'Customs Brokerage' },   { icon: Package,        label: 'Project Cargo' }] },
-  { cat: 'Supply Chain',   items: [{ icon: Warehouse,    label: 'Warehousing' },            { icon: Layers,      label: '3PL / 4PL Solutions' }, { icon: BarChart3,      label: 'Supply Chain Mgmt' }] },
+  { cat: 'Ocean & Air',    items: [{ icon: Ship,          label: 'FCL / LCL Sea Freight' }, { icon: Plane,      label: 'Air Freight' },         { icon: ArrowLeftRight, label: 'Transshipment' }] },
+  { cat: 'Land & Customs', items: [{ icon: Truck,         label: 'Land Transport' },         { icon: FileCheck,  label: 'Customs Brokerage' },   { icon: Package,        label: 'Project Cargo' }] },
+  { cat: 'Supply Chain',   items: [{ icon: Warehouse,     label: 'Warehousing' },            { icon: Layers,     label: '3PL / 4PL Solutions' }, { icon: BarChart3,      label: 'Supply Chain Mgmt' }] },
 ]
 
 const links = [
@@ -22,7 +22,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [svcOpen, setSvcOpen]       = useState(false)
   const location = useLocation()
-  const isHome   = location.pathname === '/'
+  const isHome = location.pathname === '/'
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 50)
@@ -31,61 +31,63 @@ export default function Navbar() {
   }, [])
   useEffect(() => { setMobileOpen(false); setSvcOpen(false) }, [location.pathname])
 
-  const solid    = !isHome || scrolled
-  const textCol  = solid ? 'text-[#111827]' : 'text-white'
-  const navStyle = solid
-    ? { background: '#fff', boxShadow: '0 1px 0 #E5E7EB, 0 4px 20px rgba(0,0,0,0.06)' }
-    : { background: 'transparent' }
+  // transparent = over hero; solid = scrolled or not on home
+  const transparent = isHome && !scrolled
+  const linkColor   = transparent ? '#fff' : '#111827'
+  const navBg       = transparent
+    ? 'rgba(0,0,0,0)'
+    : '#fff'
+  const navShadow   = transparent ? 'none' : '0 1px 0 #E5E7EB, 0 4px 20px rgba(0,0,0,0.06)'
 
   return (
     <motion.header
       initial={{ y: -72, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.45 }}
-      style={{ ...navStyle, position: 'fixed', top: 34, left: 0, right: 0, zIndex: 50, transition: 'background .3s, box-shadow .3s' }}
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
+        background: navBg, boxShadow: navShadow,
+        transition: 'background .3s, box-shadow .3s' }}
     >
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 2rem', height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 2rem', height: 80, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
-        {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+        {/* Logo — no white box; use drop-shadow for dark bg visibility */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <motion.div
-            whileHover={{ scale: 1.04 }}
+            whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-            style={{
-              position: 'relative',
-              padding: solid ? '6px 14px' : '8px 16px',
-              borderRadius: 10,
-              background: solid ? 'transparent' : 'rgba(255,255,255,0.97)',
-              boxShadow: solid
-                ? 'none'
-                : '0 4px 24px rgba(232,84,26,0.18), 0 0 0 1px rgba(232,84,26,0.12)',
-              transition: 'background .3s, box-shadow .3s',
-            }}
+            style={{ position: 'relative' }}
           >
-            {/* Glow ring — only on transparent nav (hero) */}
-            {!solid && (
+            {/* Pulsing ring on hero only */}
+            {transparent && (
               <motion.div
-                animate={{ opacity: [0.4, 0.8, 0.4] }}
+                animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.06, 1] }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  position: 'absolute', inset: -3, borderRadius: 13,
-                  border: '1.5px solid rgba(232,84,26,0.35)',
-                  pointerEvents: 'none',
-                }}
+                style={{ position: 'absolute', inset: -6, borderRadius: 12, border: '1.5px solid rgba(232,84,26,0.5)', pointerEvents: 'none' }}
               />
             )}
             <img
               src="/logo.png"
               alt="Logistics 365"
-              style={{ height: solid ? 46 : 52, width: 'auto', objectFit: 'contain', display: 'block' }}
+              style={{
+                height: 64, width: 'auto', objectFit: 'contain', display: 'block',
+                borderRadius: 8,
+                // on dark hero: white glow makes logo pop without a box
+                filter: transparent
+                  ? 'drop-shadow(0 0 10px rgba(255,255,255,0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.4))'
+                  : 'none',
+                transition: 'filter .3s',
+              }}
             />
           </motion.div>
         </Link>
 
-        {/* Desktop links */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop nav — all colours via inline style, no CSS class conflict */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="hidden md:flex">
           {links.map(l => l.mega ? (
-            <div key={l.to} className="mega-trigger relative">
-              <span className={`nav-item flex items-center gap-1 ${textCol}`} style={{ cursor: 'pointer' }}>
+            <div key={l.to} className="mega-trigger" style={{ position: 'relative' }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer',
+                fontFamily: "'DM Sans',system-ui,sans-serif", fontWeight: 500, fontSize: '.875rem',
+                color: linkColor, transition: 'color .2s', position: 'relative' }}
+                className="nav-link-hover">
                 {l.label} <ChevronDown size={13} />
               </span>
               <div className="mega-dd">
@@ -108,13 +110,20 @@ export default function Navbar() {
               </div>
             </div>
           ) : (
-            <Link key={l.to} to={l.to} className={`nav-item ${textCol} ${location.pathname === l.to ? 'active' : ''}`}>{l.label}</Link>
+            <Link key={l.to} to={l.to}
+              style={{ fontFamily: "'DM Sans',system-ui,sans-serif", fontWeight: 500, fontSize: '.875rem',
+                color: location.pathname === l.to ? 'var(--orange)' : linkColor,
+                textDecoration: 'none', position: 'relative', transition: 'color .2s' }}
+              className="nav-underline">
+              {l.label}
+            </Link>
           ))}
-          <Link to="/contact" className="btn btn-orange" style={{ padding: '.625rem 1.5rem', fontSize: '.8rem' }}>Get a Quote</Link>
+          <Link to="/contact" className="btn btn-orange" style={{ padding: '.625rem 1.5rem', fontSize: '.82rem' }}>Get a Quote</Link>
         </nav>
 
         {/* Mobile toggle */}
-        <button className={`md:hidden ${textCol}`} onClick={() => setMobileOpen(v => !v)}>
+        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: linkColor, display: 'flex' }}
+          className="md:hidden" onClick={() => setMobileOpen(v => !v)}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
@@ -126,7 +135,7 @@ export default function Navbar() {
             style={{ background: '#fff', borderTop: '1px solid #F3F4F6', overflow: 'hidden' }}>
             <div style={{ padding: '1.25rem 2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {[['/', 'Home'], ['/about', 'About'], ['/network', 'Network'], ['/contact', 'Contact']].map(([to, label]) => (
-                <Link key={to} to={to} style={{ color: '#111827', fontWeight: 600, fontSize: '.9rem' }}>{label}</Link>
+                <Link key={to} to={to} style={{ color: '#111827', fontWeight: 600, fontSize: '.9rem', textDecoration: 'none' }}>{label}</Link>
               ))}
               <button onClick={() => setSvcOpen(v => !v)}
                 style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#111827', fontWeight: 600, fontSize: '.9rem', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
@@ -135,7 +144,7 @@ export default function Navbar() {
               {svcOpen && (
                 <div style={{ paddingLeft: '1rem', borderLeft: '3px solid var(--orange)', display: 'flex', flexDirection: 'column', gap: '.625rem' }}>
                   {svcGroups.flatMap(g => g.items).map(item => (
-                    <Link key={item.label} to="/services" style={{ fontSize: '.8rem', color: '#6B7280', display: 'flex', alignItems: 'center', gap: '.5rem' }}>
+                    <Link key={item.label} to="/services" style={{ fontSize: '.8rem', color: '#6B7280', display: 'flex', alignItems: 'center', gap: '.5rem', textDecoration: 'none' }}>
                       <item.icon size={12} style={{ color: 'var(--orange)' }} /> {item.label}
                     </Link>
                   ))}
