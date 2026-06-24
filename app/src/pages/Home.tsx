@@ -233,8 +233,8 @@ export default function Home() {
                 const accent = ['#E8541A','#0E9B9B','#7BC14A','#E8541A'][i]
                 const accentRgb = ['232,84,26','14,155,155','123,193,74','232,84,26'][i]
                 return (
-                  <Reveal key={f.title} delay={i * 0.07}>
-                    <div className="glass-dark" style={{ borderRadius: 14, padding: '1.5rem', cursor: 'default' }}
+                  <Reveal key={f.title} delay={i * 0.07} style={{ height: '100%' }}>
+                    <div className="glass-dark" style={{ borderRadius: 14, padding: '1.5rem', cursor: 'default', height: '100%', display: 'flex', flexDirection: 'column' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = `rgba(${accentRgb},0.35)`; (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 0 1px rgba(${accentRgb},0.15), 0 12px 32px rgba(0,0,0,0.25)` }}
                       onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none' }}>
                       <div style={{ width: 44, height: 44, borderRadius: 10, background: `rgba(${accentRgb},0.15)`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', boxShadow: `0 0 16px rgba(${accentRgb},0.25)` }}>

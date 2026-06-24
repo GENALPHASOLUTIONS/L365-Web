@@ -140,7 +140,7 @@ export default function About() {
                       "Logistics is not just about moving cargo — it's about moving businesses forward. For 20 years, we've built trust, one shipment at a time."
                     </p>
                   </blockquote>
-                  <p style={{ fontSize: '.9rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.8 }}>
+                  <p style={{ fontSize: '.9rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.8, textAlign: 'justify' }}>
                     With over two decades at the helm of CL Synergy Limited, Anuradha drives the strategic vision of Logistics 365. His deep expertise in global freight, trade compliance and business development has shaped one of Sri Lanka's most trusted logistics brands. He leads with a philosophy of precision, reliability and long-term client partnership — values that define every operation at Logistics 365.
                   </p>
                   <div style={{ marginTop: '1.5rem', display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
@@ -182,7 +182,7 @@ export default function About() {
                     </div>
                     <div>
                       <h3 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 800, fontSize: '1.1rem', color: '#111827', marginBottom: '.75rem' }}>{ed.name}</h3>
-                      <p style={{ fontSize: '.82rem', color: '#6B7280', lineHeight: 1.75, marginBottom: '1rem' }}>{ed.desc}</p>
+                      <p style={{ fontSize: '.82rem', color: '#6B7280', lineHeight: 1.75, marginBottom: '1rem', textAlign: 'justify' }}>{ed.desc}</p>
                       <div style={{ display: 'flex', gap: '.5rem', flexWrap: 'wrap' }}>
                         {ed.tags.map(t => (
                           <span key={t} style={{ background: ed.bg, color: ed.color, padding: '3px 10px', borderRadius: 20, fontSize: '.65rem', fontWeight: 700 }}>{t}</span>
