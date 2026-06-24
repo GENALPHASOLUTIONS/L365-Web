@@ -1,208 +1,210 @@
 import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
-import { Ship, Plane, Package, Truck, FileCheck, Globe, Warehouse, Layers, BarChart3, ArrowRight, CheckCircle } from 'lucide-react'
+import { Ship, Plane, Warehouse, FileCheck, Layers, Package, BarChart3, ArrowRight, CheckCircle, ArrowLeftRight, Truck } from 'lucide-react'
 
-function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: 'easeOut' }}
-      className={className}>
+    <motion.div ref={ref} initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
       {children}
     </motion.div>
   )
 }
 
-const categories = [
+const cats = [
   {
-    id: 'sea', label: 'Sea Freight', icon: Ship,
-    headline: 'Global Ocean Freight Solutions',
-    desc: 'From FCL to LCL consolidations, we offer comprehensive ocean freight services that connect Sri Lanka to every major port in the world with competitive rates and reliable transit times.',
-    benefits: ['FCL (Full Container Load)', 'LCL (Less than Container Load)', 'NVOCC Operations', 'Reefer & Dangerous Goods', 'Port-to-Port & Door-to-Door', 'Transshipment via Colombo Hub'],
-    subs: [
-      { icon: Ship,    name: 'FCL Services',    desc: 'Full container solutions for large shipments with guaranteed space and competitive freight rates.' },
-      { icon: Package, name: 'LCL Consolidation', desc: 'Share container space for smaller shipments — cost-effective with regular sailing schedules.' },
-      { icon: Globe,   name: 'Transshipment',   desc: 'Leverage the Port of Colombo, one of South Asia\'s leading transshipment hubs.' },
+    id: 'sea', label: 'Sea Freight', icon: Ship, accent: '#E8541A',
+    headline: 'Ocean Freight Solutions',
+    desc: 'Connecting Sri Lanka to every major port worldwide. Whether FCL for bulk cargo or LCL for consolidations, we negotiate the best rates and ensure reliable transit times on all ocean corridors.',
+    benefits: ['FCL — Full Container Load', 'LCL — Less than Container Load', 'NVOCC Operations', 'Reefer & Dangerous Goods', 'Port-to-Port & Door-to-Door', 'Transshipment via Port Colombo'],
+    cards: [
+      { icon: Ship,          name: 'FCL Services',      desc: 'Guaranteed space, competitive freight, door-to-port or door-to-door on any trade lane.' },
+      { icon: Package,       name: 'LCL Consolidation', desc: 'Share container space for smaller volumes — cost-effective with regular sailing schedules.' },
+      { icon: ArrowLeftRight,name: 'Transshipment',     desc: 'Leverage Port Colombo, one of South Asia\'s leading transshipment hubs, for global routing.' },
     ],
   },
   {
-    id: 'air', label: 'Air Freight', icon: Plane,
-    headline: 'Time-Critical Air Cargo Solutions',
-    desc: 'When speed is non-negotiable, our air freight services deliver. With carrier partnerships at Bandaranaike International Airport and global hub connections, we ensure your cargo arrives on time.',
-    benefits: ['Express & Priority Air', 'Consolidated Air Freight', 'Charter Services', 'Airport-to-Airport / Door-to-Door', 'Perishables & Pharmaceuticals', 'Dangerous Goods (IATA certified)'],
-    subs: [
-      { icon: Plane,     name: 'Express Air',       desc: 'Same-day and next-day options for the most time-sensitive cargo.' },
-      { icon: Layers,    name: 'Consolidated Air',  desc: 'Cost-effective grouped shipments on regular freighter schedules.' },
-      { icon: Package,   name: 'Charter Cargo',     desc: 'Full aircraft charters for oversized or emergency cargo requirements.' },
+    id: 'air', label: 'Air Freight', icon: Plane, accent: '#0E9B9B',
+    headline: 'Air Cargo Solutions',
+    desc: 'When speed is non-negotiable. With strong carrier partnerships at Bandaranaike International and key global hubs, we ensure your time-critical cargo lands exactly on schedule.',
+    benefits: ['Express & Priority Air', 'Consolidated Air Freight', 'Charter Services', 'Airport-to-Airport / Door-to-Door', 'Perishables & Pharmaceuticals', 'IATA Dangerous Goods certified'],
+    cards: [
+      { icon: Plane,   name: 'Express Air',      desc: 'Same-day and next-day options for the most time-sensitive freight.' },
+      { icon: Layers,  name: 'Consolidated Air', desc: 'Cost-efficient grouped shipments on regular freighter schedules worldwide.' },
+      { icon: Package, name: 'Charter Cargo',    desc: 'Full aircraft charters for oversized, emergency, or high-value cargo.' },
     ],
   },
   {
-    id: 'customs', label: 'Customs & Trade', icon: FileCheck,
-    headline: 'Expert Customs Brokerage & Trade Compliance',
-    desc: 'Our licensed customs brokers navigate complex regulatory environments so you don\'t have to. From import/export declarations to tariff classification and duty optimization.',
-    benefits: ['Import & Export Clearance', 'Tariff Classification (HS Codes)', 'Duty & Tax Optimization', 'Customs Audit Support', 'Dangerous Goods Documentation', 'Free Trade Agreement Advisory'],
-    subs: [
-      { icon: FileCheck, name: 'Import Clearance',  desc: 'Rapid and accurate clearance of all imported goods through Sri Lankan Customs.' },
+    id: 'customs', label: 'Customs & Trade', icon: FileCheck, accent: '#7BC14A',
+    headline: 'Customs Brokerage & Trade Compliance',
+    desc: 'Our licensed customs brokers navigate complex regulatory environments so you don\'t have to. From import/export declarations to tariff classification and duty optimisation — done right, first time.',
+    benefits: ['Import & Export Clearance', 'Tariff Classification (HS Codes)', 'Duty & Tax Optimisation', 'Customs Audit Support', 'Dangerous Goods Documentation', 'Free Trade Agreement Advisory'],
+    cards: [
+      { icon: FileCheck, name: 'Import Clearance',   desc: 'Rapid, accurate clearance of all goods through Sri Lankan Customs.' },
       { icon: FileCheck, name: 'Export Declarations', desc: 'Compliant export documentation for all destination markets.' },
-      { icon: Globe,     name: 'Trade Compliance',  desc: 'Stay compliant with ever-changing international trade regulations.' },
+      { icon: BarChart3, name: 'Trade Compliance',   desc: 'Stay compliant with ever-changing international trade regulations.' },
     ],
   },
   {
-    id: 'warehouse', label: 'Warehousing', icon: Warehouse,
-    headline: 'Strategic Warehousing & Distribution',
-    desc: 'Our modern warehousing facilities offer bonded storage, temperature-controlled environments, pick-and-pack operations and last-mile distribution across Sri Lanka.',
-    benefits: ['Bonded Warehousing', 'General & Temperature-Controlled', 'Pick, Pack & Label', 'Inventory Management', 'Last-Mile Distribution', 'Value-Added Services'],
-    subs: [
-      { icon: Warehouse, name: 'Bonded Warehouse',  desc: 'Duty-deferred storage for imported goods awaiting customs clearance.' },
-      { icon: Package,   name: 'Pick & Pack',       desc: 'Fulfillment services tailored for e-commerce and retail distribution.' },
-      { icon: BarChart3, name: 'Inventory Control', desc: 'Real-time inventory management systems with full visibility.' },
+    id: 'warehouse', label: 'Warehousing', icon: Warehouse, accent: '#E8541A',
+    headline: 'Warehousing & Distribution',
+    desc: 'Strategic warehousing facilities in Colombo offering bonded storage, temperature-controlled environments, pick-and-pack, and last-mile distribution across Sri Lanka.',
+    benefits: ['Bonded Warehousing', 'General & Temperature-Controlled', 'Pick, Pack & Label', 'Real-Time Inventory Management', 'Last-Mile Distribution', 'Value-Added Services'],
+    cards: [
+      { icon: Warehouse, name: 'Bonded Warehouse', desc: 'Duty-deferred storage for imported goods awaiting customs clearance.' },
+      { icon: Package,   name: 'Pick & Pack',      desc: 'E-commerce and retail fulfilment services with daily dispatch.' },
+      { icon: BarChart3, name: 'Inventory Control', desc: 'Real-time WMS with full visibility into stock levels and movements.' },
     ],
   },
   {
-    id: '3pl', label: '3PL / 4PL', icon: Layers,
-    headline: 'Integrated 3PL & 4PL Supply Chain Management',
-    desc: 'Go beyond basic logistics. Our 3PL and 4PL solutions integrate your entire supply chain — from supplier to customer — with a single point of accountability and full visibility.',
-    benefits: ['End-to-End Supply Chain Management', 'Vendor Management', 'Multi-modal Coordination', 'IT Systems Integration', 'KPI Reporting & Analytics', 'Demand Forecasting'],
-    subs: [
-      { icon: Layers,    name: '3PL Services',       desc: 'Outsource transport, warehousing and fulfillment to one expert partner.' },
-      { icon: BarChart3, name: '4PL Orchestration',  desc: 'We manage your entire logistics ecosystem, including third-party providers.' },
-      { icon: Globe,     name: 'Supply Chain Design', desc: 'Strategic design and optimization of your global supply chain network.' },
+    id: '3pl', label: '3PL / 4PL', icon: Layers, accent: '#0E9B9B',
+    headline: 'Integrated Supply Chain Management',
+    desc: 'Go beyond basic logistics. Our 3PL and 4PL solutions integrate your entire supply chain — from supplier to customer — with a single point of accountability and end-to-end visibility.',
+    benefits: ['End-to-End Supply Chain Management', 'Vendor Management', 'Multi-modal Coordination', 'IT Systems Integration', 'KPI Reporting & Analytics', 'Demand Forecasting Support'],
+    cards: [
+      { icon: Layers,    name: '3PL Services',        desc: 'Outsource transport, warehousing and fulfilment to one expert partner.' },
+      { icon: BarChart3, name: '4PL Orchestration',   desc: 'We manage your entire logistics ecosystem including third-party providers.' },
+      { icon: Truck,     name: 'Supply Chain Design',  desc: 'Strategic design and optimisation of your global supply chain network.' },
     ],
   },
   {
-    id: 'value', label: 'Value Added', icon: BarChart3,
+    id: 'value', label: 'Value Added', icon: BarChart3, accent: '#7BC14A',
     headline: 'Value-Added Logistics Services',
-    desc: 'Beyond moving cargo — we add value at every stage. From trade intelligence to project cargo management, our specialized services complete your logistics picture.',
+    desc: 'Beyond moving cargo — we add value at every stage. Specialised services that complete your logistics picture, from project cargo management to trade lane intelligence.',
     benefits: ['Project Cargo Management', 'Packing & Labelling', 'Dangerous Goods Handling', 'Trade Lane Intelligence', 'Cargo Insurance', 'Vendor Pre-qualification'],
-    subs: [
-      { icon: Package,   name: 'Project Cargo',         desc: 'Specialized handling for heavy-lift, oversized and complex shipments.' },
-      { icon: FileCheck, name: 'Cargo Insurance',        desc: 'Comprehensive marine cargo insurance from underwriting to claims.' },
-      { icon: Globe,     name: 'Trade Intelligence',     desc: 'Market insights, tariff alerts and trade lane analytics for strategic decisions.' },
+    cards: [
+      { icon: Package,   name: 'Project Cargo',   desc: 'Heavy-lift, oversized and complex shipments handled with precision.' },
+      { icon: FileCheck, name: 'Cargo Insurance', desc: 'Comprehensive marine cargo insurance from underwriting to claims.' },
+      { icon: BarChart3, name: 'Trade Intelligence', desc: 'Market insights, tariff alerts and analytics for strategic decisions.' },
     ],
   },
 ]
 
 export default function Services() {
-  const [active, setActive] = useState(categories[0].id)
-  const cat = categories.find(c => c.id === active)!
+  const [active, setActive] = useState(cats[0].id)
+  const cat = cats.find(c => c.id === active)!
 
   return (
-    <div style={{ background: '#F6F5F2' }}>
+    <div style={{ background: '#fff' }}>
 
-      {/* ── HERO ────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-40 pb-24 px-4"
-        style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #152436 60%, #0D1B2A 100%)' }}>
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20" style={{ background: '#E8541A' }} />
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-              style={{ background: 'rgba(232,84,26,0.15)', color: '#E8541A' }}>
-              20+ Services
-            </span>
-            <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.08] mb-6">
+      {/* ── Hero ──────────────────────────────────────────── */}
+      <section style={{ background: 'linear-gradient(160deg, #0D1B2A 0%, #1a2f44 55%, #0E9B9B 150%)', paddingTop: 140, paddingBottom: 80, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-5%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(232,84,26,0.3) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="badge badge-orange" style={{ marginBottom: '1.25rem', display: 'inline-flex' }}>20+ Services</span>
+            <h1 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: 'clamp(2.5rem,5vw,4rem)', color: '#fff', lineHeight: 1.08, marginBottom: '1.25rem', maxWidth: 580 }}>
               Complete Freight<br /><span style={{ color: '#E8541A' }}>Forwarding Solutions</span>
             </h1>
-            <p className="text-lg max-w-2xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              From a single parcel to a full supply chain — our comprehensive service portfolio covers every logistics need.
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', maxWidth: 500, lineHeight: 1.7 }}>
+              From a single parcel to a full supply chain — our portfolio covers every logistics need across sea, air, land and beyond.
             </p>
           </motion.div>
         </div>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 60, background: 'linear-gradient(to bottom, transparent, #fff)', pointerEvents: 'none' }} />
       </section>
 
-      {/* ── TABS ────────────────────────────────────────────── */}
-      <section className="py-4 px-4 bg-white border-b border-gray-100 sticky top-[34px] z-30" style={{ top: 'calc(34px + 68px)' }}>
-        <div className="max-w-7xl mx-auto flex gap-1 overflow-x-auto scrollbar-hide">
-          {categories.map(c => (
+      {/* ── Tab bar ───────────────────────────────────────── */}
+      <div style={{ position: 'sticky', top: 102, zIndex: 30, background: '#fff', borderBottom: '1px solid #F3F4F6', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+        <div className="wrap" style={{ display: 'flex', gap: '.25rem', overflowX: 'auto', paddingTop: '.625rem', paddingBottom: '.625rem' }}>
+          {cats.map(c => (
             <button key={c.id} onClick={() => setActive(c.id)}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all shrink-0"
               style={{
-                background: active === c.id ? '#E8541A' : 'transparent',
-                color: active === c.id ? 'white' : '#6B7280',
+                display: 'flex', alignItems: 'center', gap: '.5rem',
+                padding: '.5rem 1.1rem', borderRadius: 8, whiteSpace: 'nowrap',
+                fontFamily: "'Outfit',system-ui,sans-serif", fontSize: '.82rem', fontWeight: 600,
+                border: 'none', cursor: 'pointer', transition: 'all .18s', flexShrink: 0,
+                background: active === c.id ? c.accent : 'transparent',
+                color: active === c.id ? '#fff' : '#6B7280',
               }}>
-              <c.icon size={14} /> {c.label}
+              <c.icon size={13} /> {c.label}
             </button>
           ))}
         </div>
-      </section>
+      </div>
 
-      {/* ── CATEGORY DETAIL ─────────────────────────────────── */}
-      <motion.section key={active} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
-        className="py-20 px-4 bg-white">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">
-          <div>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-bold mb-4"
-              style={{ background: 'rgba(232,84,26,0.1)', color: '#E8541A' }}>
-              <cat.icon size={12} /> {cat.label}
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold mb-4" style={{ color: '#0D1B2A' }}>{cat.headline}</h2>
-            <p className="text-slate-500 leading-relaxed mb-8">{cat.desc}</p>
-            <ul className="space-y-2.5">
-              {cat.benefits.map(b => (
-                <li key={b} className="flex items-center gap-3 text-sm font-medium" style={{ color: '#0D1B2A' }}>
-                  <CheckCircle size={16} style={{ color: '#E8541A', flexShrink: 0 }} /> {b}
-                </li>
+      {/* ── Category detail ───────────────────────────────── */}
+      <motion.section key={active} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
+        style={{ padding: '4rem 0', background: '#fff' }}>
+        <div className="wrap">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'start' }}>
+            {/* Left */}
+            <div>
+              <span className="badge" style={{ background: `rgba(${cat.accent === '#E8541A' ? '232,84,26' : cat.accent === '#0E9B9B' ? '14,155,155' : '123,193,74'},.1)`, color: cat.accent, marginBottom: '1rem', display: 'inline-flex' }}>
+                <cat.icon size={12} /> {cat.label}
+              </span>
+              <h2 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 800, fontSize: 'clamp(1.6rem,3vw,2.25rem)', color: '#111827', marginBottom: '1rem', lineHeight: 1.15 }}>{cat.headline}</h2>
+              <p style={{ color: '#6B7280', lineHeight: 1.75, fontSize: '.9rem', marginBottom: '1.75rem' }}>{cat.desc}</p>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '.625rem', marginBottom: '2rem' }}>
+                {cat.benefits.map(b => (
+                  <li key={b} style={{ display: 'flex', alignItems: 'center', gap: '.75rem', fontSize: '.875rem', color: '#374151', fontWeight: 500 }}>
+                    <CheckCircle size={15} style={{ color: cat.accent, flexShrink: 0 }} /> {b}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="btn btn-orange">Request a Quote <ArrowRight size={14} /></Link>
+            </div>
+
+            {/* Right — cards */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {cat.cards.map((card, i) => (
+                <motion.div key={card.name} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
+                  className="card-l365" style={{ padding: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'flex-start', borderLeft: `4px solid ${cat.accent}` }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, background: `rgba(${cat.accent === '#E8541A' ? '232,84,26' : cat.accent === '#0E9B9B' ? '14,155,155' : '123,193,74'},.1)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <card.icon size={16} style={{ color: cat.accent }} />
+                  </div>
+                  <div>
+                    <h4 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, fontSize: '.9rem', color: '#111827', marginBottom: '.35rem' }}>{card.name}</h4>
+                    <p style={{ fontSize: '.8rem', color: '#6B7280', lineHeight: 1.6 }}>{card.desc}</p>
+                  </div>
+                </motion.div>
               ))}
-            </ul>
-            <Link to="/contact" className="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-full font-bold text-sm text-white"
-              style={{ background: '#E8541A' }}>
-              Request a Quote <ArrowRight size={14} />
-            </Link>
-          </div>
-          <div className="space-y-4">
-            {cat.subs.map((s, i) => (
-              <motion.div key={s.name}
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
-                className="card p-6 flex gap-4 items-start">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(232,84,26,0.1)' }}>
-                  <s.icon size={18} style={{ color: '#E8541A' }} />
-                </div>
-                <div>
-                  <h4 className="font-extrabold text-sm mb-1" style={{ color: '#0D1B2A' }}>{s.name}</h4>
-                  <p className="text-xs leading-relaxed text-slate-500">{s.desc}</p>
-                </div>
-              </motion.div>
-            ))}
+            </div>
           </div>
         </div>
       </motion.section>
 
-      {/* ── ALL SERVICES GRID ───────────────────────────────── */}
-      <section className="py-20 px-4 stripe-bg">
-        <div className="max-w-7xl mx-auto">
-          <FadeUp className="text-center mb-12">
-            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: '#E8541A' }}>Full Portfolio</span>
-            <h2 className="text-3xl font-extrabold text-white mt-3">All Service Areas</h2>
-          </FadeUp>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {categories.map((c, i) => (
-              <FadeUp key={c.id} delay={i * 0.07}>
+      {/* ── All services grid ─────────────────────────────── */}
+      <section style={{ padding: '4rem 0', background: '#F9FAFB' }}>
+        <div className="wrap">
+          <Reveal style={{ marginBottom: '2rem', textAlign: 'center' }}>
+            <span className="badge badge-teal" style={{ marginBottom: '.75rem', display: 'inline-flex' }}>Full Portfolio</span>
+            <h2 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontSize: 'clamp(1.6rem,3vw,2.25rem)', color: '#111827' }}>All Service Areas</h2>
+          </Reveal>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))', gap: '1rem' }}>
+            {cats.map((c, i) => (
+              <Reveal key={c.id} delay={i * 0.06}>
                 <button onClick={() => { setActive(c.id); window.scrollTo({ top: 300, behavior: 'smooth' }) }}
-                  className="w-full rounded-2xl p-6 text-left transition-all hover:-translate-y-1"
-                  style={{ background: active === c.id ? 'rgba(232,84,26,0.15)' : 'rgba(255,255,255,0.06)', border: active === c.id ? '1px solid rgba(232,84,26,0.4)' : '1px solid rgba(255,255,255,0.1)' }}>
-                  <c.icon size={28} className="mb-3" style={{ color: '#E8541A' }} />
-                  <div className="font-extrabold text-white text-sm">{c.label}</div>
-                  <div className="text-xs mt-1" style={{ color: 'rgba(255,255,255,0.45)' }}>{c.benefits.length} services</div>
+                  className="card-l365"
+                  style={{ width: '100%', padding: '1.5rem', textAlign: 'left', cursor: 'pointer', background: active === c.id ? '#fff' : '#fff', borderLeft: active === c.id ? `4px solid ${c.accent}` : '4px solid transparent' }}>
+                  <c.icon size={24} style={{ color: c.accent, marginBottom: '.75rem' }} />
+                  <div style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, fontSize: '.95rem', color: '#111827', marginBottom: '.35rem' }}>{c.label}</div>
+                  <div style={{ fontSize: '.78rem', color: '#9CA3AF' }}>{c.benefits.length} services included</div>
                 </button>
-              </FadeUp>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-20 px-4 text-center" style={{ background: '#F6F5F2' }}>
-        <FadeUp>
-          <h2 className="text-3xl md:text-4xl font-extrabold mb-4" style={{ color: '#0D1B2A' }}>Can't Find What You Need?</h2>
-          <p className="text-slate-500 max-w-lg mx-auto mb-8">Our logistics experts can design a custom solution for any cargo, any route, any requirement.</p>
-          <Link to="/contact" className="glow-btn inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-sm text-white"
-            style={{ background: '#E8541A' }}>
-            Talk to an Expert <ArrowRight size={16} />
-          </Link>
-        </FadeUp>
+      <section style={{ background: '#E8541A', padding: '4rem 0' }}>
+        <div className="wrap" style={{ textAlign: 'center' }}>
+          <Reveal>
+            <h2 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: 'clamp(1.6rem,3.5vw,2.25rem)', color: '#fff', marginBottom: '1rem' }}>
+              Can't Find What You Need?
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.8)', marginBottom: '2rem', maxWidth: 420, margin: '0 auto 2rem' }}>
+              Our logistics experts can design a custom solution for any cargo, any route, any requirement.
+            </p>
+            <Link to="/contact" className="btn" style={{ background: '#fff', color: '#E8541A' }}>
+              Talk to an Expert <ArrowRight size={15} />
+            </Link>
+          </Reveal>
+        </div>
       </section>
     </div>
   )

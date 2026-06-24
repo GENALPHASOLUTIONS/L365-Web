@@ -1,219 +1,204 @@
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { MapPin, Phone, Mail, Clock, Send, ArrowRight } from 'lucide-react'
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react'
 
-function FadeUp({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   const ref = useRef(null)
-  const inView = useInView(ref, { once: true, margin: '-60px' })
+  const inView = useInView(ref, { once: true, margin: '-80px' })
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: 'easeOut' }}
-      className={className}>
+    <motion.div ref={ref} initial={{ opacity: 0, y: 28 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
       {children}
     </motion.div>
   )
 }
 
+const info = [
+  { icon: MapPin, label: 'Address', value: '06th Floor, Iceland Business Centre\nColombo 03, Sri Lanka', href: '', accent: '#E8541A' },
+  { icon: Phone,  label: 'Phone',   value: '+94 11 530 0250',  href: 'tel:+94115300250',        accent: '#0E9B9B' },
+  { icon: Mail,   label: 'Email',   value: 'info@log-365.com', href: 'mailto:info@log-365.com', accent: '#7BC14A' },
+  { icon: Clock,  label: 'Hours',   value: '24 / 7 / 365\nWe never stop. Neither does cargo.', href: '', accent: '#E8541A' },
+]
+
 export default function Contact() {
-  const [form, setForm] = useState({
-    name: '', company: '', email: '', phone: '', service: '', origin: '', destination: '', message: ''
-  })
+  const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', service: '', origin: '', destination: '', message: '' })
   const [sent, setSent] = useState(false)
 
   const handle = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm(p => ({ ...p, [e.target.name]: e.target.value }))
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSent(true)
-  }
+  const submit = (e: React.FormEvent) => { e.preventDefault(); setSent(true) }
 
   return (
-    <div style={{ background: '#F6F5F2' }}>
+    <div style={{ background: '#fff' }}>
 
-      {/* ── HERO ────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-40 pb-24 px-4"
-        style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #152436 60%, #0D1B2A 100%)' }}>
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl opacity-20" style={{ background: '#E8541A' }} />
-        <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-              style={{ background: 'rgba(232,84,26,0.15)', color: '#E8541A' }}>
-              Let's Talk Freight
-            </span>
-            <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-[1.08] mb-6">
+      {/* ── Hero ──────────────────────────────────────────── */}
+      <section style={{ background: 'linear-gradient(160deg, #0D1B2A 0%, #1a2f44 55%, #0E9B9B 150%)', paddingTop: 140, paddingBottom: 80, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-5%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(232,84,26,0.3) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="wrap" style={{ position: 'relative', zIndex: 1 }}>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <span className="badge badge-orange" style={{ marginBottom: '1.25rem', display: 'inline-flex' }}>Let's Talk Freight</span>
+            <h1 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: 'clamp(2.5rem,5vw,4rem)', color: '#fff', lineHeight: 1.08, marginBottom: '1.25rem', maxWidth: 560 }}>
               Get a Quote.<br /><span style={{ color: '#E8541A' }}>Move Your Cargo.</span>
             </h1>
-            <p className="text-lg max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.6)' }}>
-              Our freight experts respond within 2 hours. No generic quotes — just tailored solutions for your specific needs.
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '1rem', maxWidth: 460, lineHeight: 1.7 }}>
+              Our freight experts respond within 2 hours — not with a generic price list, but a tailored solution for your specific cargo and route.
             </p>
           </motion.div>
         </div>
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 60, background: 'linear-gradient(to bottom, transparent, #fff)', pointerEvents: 'none' }} />
       </section>
 
-      {/* ── MAIN CONTENT ────────────────────────────────────── */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-start">
+      {/* ── Main layout ───────────────────────────────────── */}
+      <section style={{ padding: '5rem 0' }}>
+        <div className="wrap">
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '3rem', alignItems: 'start' }}>
 
-          {/* Left — contact info */}
-          <FadeUp>
-            <div className="rounded-3xl p-8 sticky top-28" style={{ background: '#0D1B2A' }}>
-              <h2 className="text-2xl font-extrabold text-white mb-2">Logistics 365 (Pvt) Ltd</h2>
-              <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.5)' }}>A subsidiary of CL Synergy Limited</p>
+            {/* Left — contact info */}
+            <Reveal>
+              <div style={{ position: 'sticky', top: 120 }}>
+                <h2 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 800, fontSize: '1.4rem', color: '#111827', marginBottom: '.375rem' }}>Logistics 365 (Pvt) Ltd</h2>
+                <p style={{ fontSize: '.82rem', color: '#9CA3AF', marginBottom: '2rem' }}>A subsidiary of CL Synergy Limited</p>
 
-              <div className="space-y-6">
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(232,84,26,0.15)' }}>
-                    <MapPin size={16} style={{ color: '#E8541A' }} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: '#E8541A' }}>Address</div>
-                    <p className="text-white text-sm">06th Floor, Iceland Business Centre<br />Colombo 03, Sri Lanka</p>
-                  </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
+                  {info.map(item => (
+                    <div key={item.label} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+                      <div style={{ width: 40, height: 40, borderRadius: 8, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: `rgba(${item.accent === '#E8541A' ? '232,84,26' : item.accent === '#0E9B9B' ? '14,155,155' : '123,193,74'},.1)` }}>
+                        <item.icon size={16} style={{ color: item.accent }} />
+                      </div>
+                      <div>
+                        <p style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: item.accent, marginBottom: '.3rem' }}>{item.label}</p>
+                        {item.href
+                          ? <a href={item.href} style={{ fontSize: '.875rem', color: '#111827', fontWeight: 500, textDecoration: 'none' }}
+                              onMouseEnter={e => (e.currentTarget.style.color = item.accent)}
+                              onMouseLeave={e => (e.currentTarget.style.color = '#111827')}>{item.value}</a>
+                          : <p style={{ fontSize: '.875rem', color: '#374151', lineHeight: 1.55, whiteSpace: 'pre-line' }}>{item.value}</p>
+                        }
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(14,155,155,0.15)' }}>
-                    <Phone size={16} style={{ color: '#0E9B9B' }} />
+                {/* Cert strip */}
+                <div style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 10, padding: '1.25rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '.5rem', marginBottom: '.75rem' }}>
+                    <span className="pulse-dot" style={{ width: 7, height: 7, borderRadius: '50%', background: '#7BC14A', display: 'inline-block' }} />
+                    <span style={{ fontSize: '.72rem', fontWeight: 700, color: '#7BC14A' }}>CL Synergy Group · Est. 2004</span>
                   </div>
-                  <div>
-                    <div className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: '#0E9B9B' }}>Phone</div>
-                    <a href="tel:+94115300250" className="text-white text-sm hover:text-[#E8541A] transition-colors">+94 11 530 0250</a>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(123,193,74,0.15)' }}>
-                    <Mail size={16} style={{ color: '#7BC14A' }} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: '#7BC14A' }}>Email</div>
-                    <a href="mailto:info@log-365.com" className="text-white text-sm hover:text-[#E8541A] transition-colors">info@log-365.com</a>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 items-start">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: 'rgba(232,84,26,0.15)' }}>
-                    <Clock size={16} style={{ color: '#E8541A' }} />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: '#E8541A' }}>Hours</div>
-                    <p className="text-white text-sm">24 / 7 / 365</p>
-                    <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>We never stop. Neither does cargo.</p>
-                  </div>
+                  {['SLAFFA Member Organisation', 'Licensed Customs Brokers', '150+ Country Network'].map(t => (
+                    <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '.5rem', marginBottom: '.4rem' }}>
+                      <CheckCircle size={12} style={{ color: '#0E9B9B', flexShrink: 0 }} />
+                      <span style={{ fontSize: '.78rem', color: '#6B7280' }}>{t}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
+            </Reveal>
 
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#7BC14A' }} />
-                  <span className="text-xs font-semibold" style={{ color: '#7BC14A' }}>CL Synergy Group Member</span>
-                </div>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                  Backed by 20+ years of industry expertise. SLAFFA member. Licensed customs brokers.
-                </p>
-              </div>
-            </div>
-          </FadeUp>
+            {/* Right — form */}
+            <Reveal delay={0.1}>
+              {sent ? (
+                <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+                  style={{ background: '#F9FAFB', border: '1px solid #E5E7EB', borderRadius: 16, padding: '4rem 2rem', textAlign: 'center' }}>
+                  <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'rgba(14,155,155,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                    <CheckCircle size={28} style={{ color: '#0E9B9B' }} />
+                  </div>
+                  <h3 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 800, fontSize: '1.5rem', color: '#111827', marginBottom: '.75rem' }}>Quote Request Sent!</h3>
+                  <p style={{ color: '#6B7280', fontSize: '.9rem', lineHeight: 1.7 }}>Our team will respond within 2 business hours with a tailored freight solution for your needs.</p>
+                </motion.div>
+              ) : (
+                <form onSubmit={submit} style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 16, padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                  <div>
+                    <h3 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 800, fontSize: '1.25rem', color: '#111827', marginBottom: '.25rem' }}>Request a Freight Quote</h3>
+                    <p style={{ fontSize: '.8rem', color: '#9CA3AF' }}>We respond within 2 hours · No obligation</p>
+                  </div>
 
-          {/* Right — form */}
-          <FadeUp delay={0.1}>
-            {sent ? (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                className="card p-12 text-center">
-                <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'rgba(123,193,74,0.1)' }}>
-                  <ArrowRight size={32} style={{ color: '#7BC14A' }} />
-                </div>
-                <h3 className="text-2xl font-extrabold mb-3" style={{ color: '#0D1B2A' }}>Quote Request Sent!</h3>
-                <p className="text-slate-500">Our team will respond within 2 business hours with a tailored freight solution.</p>
-              </motion.div>
-            ) : (
-              <form onSubmit={submit} className="card p-8 space-y-4">
-                <h3 className="text-xl font-extrabold mb-2" style={{ color: '#0D1B2A' }}>Request a Freight Quote</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Full Name *</label>
-                    <input name="name" value={form.name} onChange={handle} required placeholder="John Doe" className="input-field" />
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Full Name *</label>
+                      <input name="name" value={form.name} onChange={handle} required placeholder="John Perera" className="field" />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Company</label>
+                      <input name="company" value={form.company} onChange={handle} placeholder="Company (Pvt) Ltd" className="field" />
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Company</label>
-                    <input name="company" value={form.company} onChange={handle} placeholder="Company Ltd" className="input-field" />
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Email *</label>
+                      <input name="email" type="email" value={form.email} onChange={handle} required placeholder="you@company.com" className="field" />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Phone</label>
+                      <input name="phone" value={form.phone} onChange={handle} placeholder="+94 xx xxx xxxx" className="field" />
+                    </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
+
                   <div>
-                    <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Email *</label>
-                    <input name="email" type="email" value={form.email} onChange={handle} required placeholder="john@company.com" className="input-field" />
+                    <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Service Required</label>
+                    <select name="service" value={form.service} onChange={handle} className="field">
+                      <option value="">Select a service...</option>
+                      <option>Sea Freight — FCL</option>
+                      <option>Sea Freight — LCL</option>
+                      <option>Air Freight — Express</option>
+                      <option>Air Freight — Consolidated</option>
+                      <option>Customs Brokerage</option>
+                      <option>Warehousing</option>
+                      <option>3PL / 4PL Solutions</option>
+                      <option>Project Cargo</option>
+                      <option>Other / Multiple Services</option>
+                    </select>
                   </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Origin</label>
+                      <input name="origin" value={form.origin} onChange={handle} placeholder="e.g. Colombo, Sri Lanka" className="field" />
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Destination</label>
+                      <input name="destination" value={form.destination} onChange={handle} placeholder="e.g. Dubai, UAE" className="field" />
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Phone</label>
-                    <input name="phone" value={form.phone} onChange={handle} placeholder="+94 xx xxx xxxx" className="input-field" />
+                    <label style={{ display: 'block', fontSize: '.75rem', fontWeight: 700, color: '#374151', marginBottom: '.5rem' }}>Additional Details</label>
+                    <textarea name="message" value={form.message} onChange={handle} rows={4} placeholder="Cargo type, weight, dimensions, special requirements..." className="field" style={{ resize: 'none' }} />
                   </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Service Required</label>
-                  <select name="service" value={form.service} onChange={handle} className="input-field">
-                    <option value="">Select a service...</option>
-                    <option>Sea Freight — FCL</option>
-                    <option>Sea Freight — LCL</option>
-                    <option>Air Freight — Express</option>
-                    <option>Air Freight — Consolidated</option>
-                    <option>Customs Brokerage</option>
-                    <option>Warehousing</option>
-                    <option>3PL / 4PL Solutions</option>
-                    <option>Project Cargo</option>
-                    <option>Cross-Trade / Transshipment</option>
-                    <option>Other / Multiple</option>
-                  </select>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Origin</label>
-                    <input name="origin" value={form.origin} onChange={handle} placeholder="e.g. Colombo, Sri Lanka" className="input-field" />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Destination</label>
-                    <input name="destination" value={form.destination} onChange={handle} placeholder="e.g. Dubai, UAE" className="input-field" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold mb-1.5" style={{ color: '#374151' }}>Additional Details</label>
-                  <textarea name="message" value={form.message} onChange={handle} rows={4} placeholder="Cargo type, weight, dimensions, special requirements..." className="input-field resize-none" />
-                </div>
-                <button type="submit"
-                  className="glow-btn w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2"
-                  style={{ background: '#E8541A' }}>
-                  <Send size={16} /> Send Quote Request
-                </button>
-                <p className="text-center text-xs text-slate-400">We respond within 2 hours · No spam · No obligation</p>
-              </form>
-            )}
-          </FadeUp>
+
+                  <button type="submit" className="btn btn-orange" style={{ justifyContent: 'center', width: '100%' }}>
+                    <Send size={15} /> Send Quote Request
+                  </button>
+                </form>
+              )}
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      {/* ── QUICK CONTACT STRIP ─────────────────────────────── */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { icon: Phone,  label: 'Call Us Now',   value: '+94 11 530 0250',   href: 'tel:+94115300250',          color: '#E8541A' },
-            { icon: Mail,   label: 'Email Us',       value: 'info@log-365.com',  href: 'mailto:info@log-365.com',   color: '#0E9B9B' },
-            { icon: MapPin, label: 'Visit Us',        value: 'Iceland Business Centre, Colombo 03', href: '#',     color: '#7BC14A' },
-          ].map((c, i) => (
-            <FadeUp key={c.label} delay={i * 0.08}>
-              <a href={c.href} className="card p-6 flex items-center gap-5 group">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110"
-                  style={{ background: `rgba(${c.color === '#E8541A' ? '232,84,26' : c.color === '#0E9B9B' ? '14,155,155' : '123,193,74'},0.1)` }}>
-                  <c.icon size={20} style={{ color: c.color }} />
-                </div>
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: c.color }}>{c.label}</div>
-                  <div className="font-bold text-sm" style={{ color: '#0D1B2A' }}>{c.value}</div>
-                </div>
-              </a>
-            </FadeUp>
-          ))}
+      {/* ── Quick contact strip ───────────────────────────── */}
+      <section style={{ padding: '3rem 0', background: '#F9FAFB' }}>
+        <div className="wrap">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '1rem' }}>
+            {[
+              { icon: Phone, label: 'Call Us Now',  val: '+94 11 530 0250',  href: 'tel:+94115300250',        accent: '#E8541A' },
+              { icon: Mail,  label: 'Email Us',      val: 'info@log-365.com', href: 'mailto:info@log-365.com', accent: '#0E9B9B' },
+              { icon: MapPin,label: 'Visit Us',       val: 'Iceland Business Centre, Colombo 03', href: '#',  accent: '#7BC14A' },
+            ].map((c, i) => (
+              <Reveal key={c.label} delay={i * 0.08}>
+                <a href={c.href} className="card-l365" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 10, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: `rgba(${c.accent === '#E8541A' ? '232,84,26' : c.accent === '#0E9B9B' ? '14,155,155' : '123,193,74'},.1)` }}>
+                    <c.icon size={18} style={{ color: c.accent }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '.68rem', fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: c.accent, marginBottom: '.25rem' }}>{c.label}</p>
+                    <p style={{ fontSize: '.875rem', fontWeight: 600, color: '#111827' }}>{c.val}</p>
+                  </div>
+                </a>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
     </div>
