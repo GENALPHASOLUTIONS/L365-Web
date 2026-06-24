@@ -5,7 +5,7 @@
       "name": "L365-Web",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "cwd": "/Users/snuk/Library/CloudStorage/OneDrive-Personal/Niranja Personal/Business/Gen Alpha Solutions/PVT LTD/Gen Alpha Solutions/Software/L365-Web/app",
+      "cwd": "app",
       "port": 5173
     }
   ]
