@@ -81,7 +81,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav — all colours via inline style, no CSS class conflict */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '2rem' }} className="hidden md:flex">
+        <nav style={{ alignItems: 'center', gap: '2rem' }} className="hidden md:flex">
           {links.map(l => l.mega ? (
             <div key={l.to} className="mega-trigger" style={{ position: 'relative' }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer',
@@ -122,7 +122,7 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile toggle */}
-        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: linkColor, display: 'flex' }}
+        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: linkColor }}
           className="md:hidden" onClick={() => setMobileOpen(v => !v)}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
