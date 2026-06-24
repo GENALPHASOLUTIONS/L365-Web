@@ -34,10 +34,9 @@ export default function Navbar() {
   // transparent = over hero; solid = scrolled or not on home
   const transparent = isHome && !scrolled
   const linkColor   = transparent ? '#fff' : '#111827'
-  const navBg       = transparent
-    ? 'rgba(0,0,0,0)'
-    : '#fff'
-  const navShadow   = transparent ? 'none' : '0 1px 0 #E5E7EB, 0 4px 20px rgba(0,0,0,0.06)'
+  const navBg         = transparent ? 'rgba(0,0,0,0)' : 'rgba(255,255,255,0.88)'
+  const navBackdrop   = transparent ? 'none' : 'blur(22px) saturate(180%)'
+  const navShadow     = transparent ? 'none' : '0 1px 0 rgba(229,231,235,0.7), 0 4px 24px rgba(0,0,0,0.07)'
 
   return (
     <motion.header
@@ -45,34 +44,24 @@ export default function Navbar() {
       transition={{ duration: 0.45 }}
       style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50,
         background: navBg, boxShadow: navShadow,
-        transition: 'background .3s, box-shadow .3s' }}
+        backdropFilter: navBackdrop, WebkitBackdropFilter: navBackdrop,
+        transition: 'background .35s, box-shadow .35s, backdrop-filter .35s' }}
     >
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 2rem', height: 80, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* Logo — no white box; use drop-shadow for dark bg visibility */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
           <motion.div
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.04 }}
             transition={{ type: 'spring', stiffness: 320, damping: 20 }}
-            style={{ position: 'relative' }}
           >
-            {/* Pulsing ring on hero only */}
-            {transparent && (
-              <motion.div
-                animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.06, 1] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ position: 'absolute', inset: -6, borderRadius: 12, border: '1.5px solid rgba(232,84,26,0.5)', pointerEvents: 'none' }}
-              />
-            )}
             <img
               src="/logo.png"
               alt="Logistics 365"
               style={{
-                height: 64, width: 'auto', objectFit: 'contain', display: 'block',
-                borderRadius: 8,
-                // on dark hero: white glow makes logo pop without a box
+                height: 60, width: 'auto', objectFit: 'contain', display: 'block',
                 filter: transparent
-                  ? 'drop-shadow(0 0 10px rgba(255,255,255,0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.4))'
+                  ? 'drop-shadow(0 0 12px rgba(255,255,255,0.6)) drop-shadow(0 2px 8px rgba(0,0,0,0.5))'
                   : 'none',
                 transition: 'filter .3s',
               }}

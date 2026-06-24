@@ -149,6 +149,16 @@ h1, h2, h3, h4, h5 {
 .nav-item:hover { color: var(--orange); }
 .nav-item:hover::after, .nav-item.active::after { width: 100%; }
 
+/* ── Nav underline hover ────────────────────────── */
+.nav-underline { position: relative; }
+.nav-underline::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--teal));
+  border-radius: 2px; transition: width .25s ease;
+}
+.nav-underline:hover::after { width: 100%; }
+
 /* ── Mega dropdown ─────────────────────────────── */
 .mega-dd {
   position: absolute;
@@ -229,3 +239,63 @@ h1, h2, h3, h4, h5 {
 /* ── Orbit logo (keep for logo branding) ────────── */
 @keyframes orbit1 { from{transform:rotateX(70deg) rotateZ(0deg)} to{transform:rotateX(70deg) rotateZ(360deg)} }
 @keyframes orbit2 { from{transform:rotateX(60deg) rotateY(20deg) rotateZ(360deg)} to{transform:rotateX(60deg) rotateY(20deg) rotateZ(0deg)} }
+
+/* ── Glassmorphism dark cards ──────────────────── */
+.glass-dark {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: background .25s, border-color .25s, box-shadow .25s;
+}
+.glass-dark:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+/* ── Glow card borders on hover ───────────────── */
+.glow-card { transition: box-shadow .25s, transform .25s; }
+.glow-card:hover { transform: translateY(-5px); }
+.glow-card-orange:hover { box-shadow: 0 -3px 0 var(--orange) inset, 0 16px 40px rgba(232,84,26,0.14); }
+.glow-card-teal:hover   { box-shadow: 0 -3px 0 var(--teal)   inset, 0 16px 40px rgba(14,155,155,0.14); }
+.glow-card-green:hover  { box-shadow: 0 -3px 0 var(--green)  inset, 0 16px 40px rgba(123,193,74,0.14); }
+
+/* ── Badge glow variants ──────────────────────── */
+.badge-glow-orange { background: rgba(232,84,26,0.12); color: var(--orange); border: 1px solid rgba(232,84,26,0.3); box-shadow: 0 0 20px rgba(232,84,26,0.12); }
+.badge-glow-teal   { background: rgba(14,155,155,0.12); color: var(--teal);   border: 1px solid rgba(14,155,155,0.3); box-shadow: 0 0 20px rgba(14,155,155,0.12); }
+.badge-glow-green  { background: rgba(123,193,74,0.12); color: var(--green);  border: 1px solid rgba(123,193,74,0.3); box-shadow: 0 0 20px rgba(123,193,74,0.12); }
+
+/* ── Shine sweep on buttons ───────────────────── */
+@keyframes shine-sweep { from { left: -70% } to { left: 130% } }
+.btn-shine { position: relative; overflow: hidden; }
+.btn-shine::after {
+  content: '';
+  position: absolute; top: 0; left: -70%;
+  width: 55%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform: skewX(-20deg);
+}
+.btn-shine:hover::after { animation: shine-sweep .55s ease forwards; }
+
+/* ── Aurora drifting orbs ─────────────────────── */
+@keyframes aurora-1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(60px,-50px) scale(1.2)} }
+@keyframes aurora-2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-55px,35px) scale(1.1)} }
+@keyframes aurora-3 { 0%,100%{transform:translate(0,0) scale(1.05)} 50%{transform:translate(30px,55px) scale(0.9)} }
+.aurora-1 { animation: aurora-1 14s ease-in-out infinite; }
+.aurora-2 { animation: aurora-2 18s ease-in-out infinite; }
+.aurora-3 { animation: aurora-3 22s ease-in-out infinite; }
+
+/* ── Gradient text ────────────────────────────── */
+.grad-text-ot {
+  background: linear-gradient(135deg, var(--orange) 0%, var(--teal) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ── Card hover lift + accent border ─────────── */
+.card-modern {
+  border-radius: 16px; overflow: hidden;
+  border: 1.5px solid #E5E7EB;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
+}
+.card-modern:hover { transform: translateY(-5px); }

@@ -1,6 +1,23 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
+
+function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true })
+  const [val, setVal] = useState(0)
+  useEffect(() => {
+    if (!inView) return
+    const duration = 1400, start = Date.now()
+    const tick = () => {
+      const p = Math.min((Date.now() - start) / duration, 1)
+      setVal(Math.round((1 - Math.pow(1 - p, 3)) * to))
+      if (p < 1) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  }, [inView, to])
+  return <span ref={ref}>{val}{suffix}</span>
+}
 import { Ship, Plane, Warehouse, FileCheck, Layers, Package, ArrowRight, Shield, Clock, Globe, Award, CheckCircle } from 'lucide-react'
 
 function Reveal({ children, delay = 0, className = '', style }: { children: React.ReactNode; delay?: number; className?: string; style?: React.CSSProperties }) {
@@ -55,10 +72,13 @@ export default function Home() {
     <div style={{ background: '#fff' }}>
 
       {/* ═══ HERO ═══════════════════════════════════════════ */}
-      <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg, #0D1B2A 0%, #1a2f44 55%, #0E9B9B 150%)' }}>
-        <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(232,84,26,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', bottom: '-10%', left: '10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(14,155,155,0.25) 0%, transparent 70%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '50px 50px', pointerEvents: 'none' }} />
+      <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden', background: 'linear-gradient(160deg, #0D1B2A 0%, #162336 55%, #0a2a2a 100%)' }}>
+        {/* Aurora orbs */}
+        <div className="aurora-1" style={{ position: 'absolute', top: '-8%', right: '-3%', width: 640, height: 640, borderRadius: '50%', background: 'radial-gradient(circle, rgba(232,84,26,0.32) 0%, transparent 68%)', pointerEvents: 'none' }} />
+        <div className="aurora-2" style={{ position: 'absolute', bottom: '-12%', left: '8%', width: 480, height: 480, borderRadius: '50%', background: 'radial-gradient(circle, rgba(14,155,155,0.28) 0%, transparent 68%)', pointerEvents: 'none' }} />
+        <div className="aurora-3" style={{ position: 'absolute', top: '30%', left: '35%', width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, rgba(123,193,74,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        {/* Grid overlay */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '60px 60px', pointerEvents: 'none' }} />
 
         <div className="wrap" style={{ position: 'relative', zIndex: 1, paddingTop: 140, paddingBottom: 100 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '4rem', alignItems: 'center' }}>
@@ -72,17 +92,24 @@ export default function Home() {
                   Sea, air, customs, warehousing and end-to-end supply chain solutions — delivered with 20+ years of precision and trust.
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                  <Link to="/services" className="btn btn-orange">Explore Services <ArrowRight size={15} /></Link>
-                  <Link to="/contact"  className="btn btn-outline-white">Get a Free Quote</Link>
+                  <Link to="/services" className="btn btn-orange btn-shine">Explore Services <ArrowRight size={15} /></Link>
+                  <Link to="/contact"  className="btn btn-outline-white btn-shine">Get a Free Quote</Link>
                 </div>
               </motion.div>
 
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.35 }}
-                style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', marginTop: '4rem', background: 'rgba(255,255,255,0.1)', borderRadius: 12, overflow: 'hidden', maxWidth: 580 }}>
-                {stats.map(s => (
-                  <div key={s.num} style={{ padding: '1.25rem 1rem', background: 'rgba(255,255,255,0.05)', textAlign: 'center' }}>
-                    <div style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: '2rem', color: '#E8541A', lineHeight: 1 }}>{s.num}</div>
-                    <div style={{ fontSize: '.7rem', color: 'rgba(255,255,255,0.5)', marginTop: '.4rem', fontWeight: 500 }}>{s.sub}</div>
+                style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1px', marginTop: '4rem', background: 'rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden', maxWidth: 580, backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+                {[
+                  { label: '20+', to: 20, suffix: '+', sub: 'Years Heritage', color: '#E8541A' },
+                  { label: '150+', to: 150, suffix: '+', sub: 'Countries Reached', color: '#0E9B9B' },
+                  { label: '500+', to: 500, suffix: '+', sub: 'Clients Served', color: '#7BC14A' },
+                  { label: '24/7', to: null, suffix: '', sub: '365 Operations', color: '#E8541A' },
+                ].map((s, i) => (
+                  <div key={s.sub} style={{ padding: '1.35rem 1rem', background: i % 2 === 0 ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)', textAlign: 'center' }}>
+                    <div style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: '2rem', color: s.color, lineHeight: 1 }}>
+                      {s.to ? <CountUp to={s.to} suffix={s.suffix} /> : s.label}
+                    </div>
+                    <div style={{ fontSize: '.68rem', color: 'rgba(255,255,255,0.5)', marginTop: '.4rem', fontWeight: 500, letterSpacing: '.04em' }}>{s.sub}</div>
                   </div>
                 ))}
               </motion.div>
@@ -175,7 +202,7 @@ export default function Home() {
           </div>
 
           <Reveal style={{ textAlign: 'center', marginTop: '2.5rem' }}>
-            <Link to="/services" className="btn btn-outline">View All Services <ArrowRight size={14} /></Link>
+            <Link to="/services" className="btn btn-outline btn-shine">View All Services <ArrowRight size={14} /></Link>
           </Reveal>
         </div>
       </section>
@@ -202,17 +229,23 @@ export default function Home() {
               </div>
             </Reveal>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              {whyUs.map((f, i) => (
-                <Reveal key={f.title} delay={i * 0.07}>
-                  <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: '1.5rem' }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 8, background: 'rgba(232,84,26,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
-                      <f.icon size={18} style={{ color: '#E8541A' }} />
+              {whyUs.map((f, i) => {
+                const accent = ['#E8541A','#0E9B9B','#7BC14A','#E8541A'][i]
+                const accentRgb = ['232,84,26','14,155,155','123,193,74','232,84,26'][i]
+                return (
+                  <Reveal key={f.title} delay={i * 0.07}>
+                    <div className="glass-dark" style={{ borderRadius: 14, padding: '1.5rem', cursor: 'default' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = `rgba(${accentRgb},0.35)`; (e.currentTarget as HTMLDivElement).style.boxShadow = `0 0 0 1px rgba(${accentRgb},0.15), 0 12px 32px rgba(0,0,0,0.25)` }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = 'rgba(255,255,255,0.1)'; (e.currentTarget as HTMLDivElement).style.boxShadow = 'none' }}>
+                      <div style={{ width: 44, height: 44, borderRadius: 10, background: `rgba(${accentRgb},0.15)`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem', boxShadow: `0 0 16px rgba(${accentRgb},0.25)` }}>
+                        <f.icon size={20} style={{ color: accent, filter: `drop-shadow(0 0 6px rgba(${accentRgb},0.6))` }} />
+                      </div>
+                      <h4 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, fontSize: '.9rem', color: '#fff', marginBottom: '.5rem' }}>{f.title}</h4>
+                      <p style={{ fontSize: '.78rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.65 }}>{f.desc}</p>
                     </div>
-                    <h4 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, fontSize: '.875rem', color: '#fff', marginBottom: '.5rem' }}>{f.title}</h4>
-                    <p style={{ fontSize: '.78rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{f.desc}</p>
-                  </div>
-                </Reveal>
-              ))}
+                  </Reveal>
+                )
+              })}
             </div>
           </div>
         </div>
@@ -261,14 +294,13 @@ export default function Home() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1rem' }}>
             {sectors.map((s, i) => (
               <Reveal key={s.label} delay={i * 0.06}>
-                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', cursor: 'default', border: `1.5px solid ${s.color}22`, transition: 'transform .25s, box-shadow .25s' }}
-                  onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.transform = 'translateY(-6px)'; d.style.boxShadow = `0 20px 40px ${s.color}22` }}
-                  onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.transform = 'none'; d.style.boxShadow = 'none' }}>
-                  {/* Color bar top */}
-                  <div style={{ height: 4, background: s.color }} />
-                  <div style={{ padding: '1.75rem 1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '.75rem', background: '#fff' }}>
-                    <div style={{ width: 60, height: 60, borderRadius: '50%', background: `${s.color}12`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.75rem' }}>{s.icon}</div>
-                    <span style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, fontSize: '.9rem', color: '#111827' }}>{s.label}</span>
+                <div style={{ position: 'relative', borderRadius: 16, overflow: 'hidden', cursor: 'default', border: `1.5px solid ${s.color}30`, transition: 'transform .25s, box-shadow .25s, border-color .25s' }}
+                  onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.transform = 'translateY(-7px)'; d.style.boxShadow = `0 24px 48px ${s.color}28`; d.style.borderColor = `${s.color}88` }}
+                  onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.transform = 'none'; d.style.boxShadow = 'none'; d.style.borderColor = `${s.color}30` }}>
+                  <div style={{ height: 4, background: `linear-gradient(90deg, ${s.color}, ${s.color}aa)` }} />
+                  <div style={{ padding: '1.75rem 1.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '.75rem', background: '#fff' }}>
+                    <div style={{ width: 62, height: 62, borderRadius: '50%', background: `linear-gradient(135deg, ${s.color}18, ${s.color}08)`, border: `1.5px solid ${s.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.8rem', boxShadow: `0 4px 16px ${s.color}18` }}>{s.icon}</div>
+                    <span style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 700, fontSize: '.875rem', color: '#111827', lineHeight: 1.3 }}>{s.label}</span>
                   </div>
                 </div>
               </Reveal>
@@ -278,18 +310,24 @@ export default function Home() {
       </section>
 
       {/* ═══ CTA BAND ════════════════════════════════════════ */}
-      <section style={{ background: '#E8541A', padding: '5rem 0' }}>
-        <div className="wrap" style={{ textAlign: 'center' }}>
+      <section style={{ position: 'relative', overflow: 'hidden', background: 'linear-gradient(135deg, #c74416 0%, #E8541A 50%, #d65f20 100%)', padding: '5rem 0' }}>
+        <div style={{ position: 'absolute', top: '-40%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '-30%', left: '-5%', width: 350, height: 350, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,0,0,0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div className="wrap" style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
           <Reveal>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem', background: 'rgba(255,255,255,0.15)', borderRadius: 6, padding: '4px 14px', marginBottom: '1.25rem' }}>
+              <span className="pulse-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', display: 'inline-block', flexShrink: 0 }} />
+              <span style={{ fontSize: '.68rem', fontWeight: 700, color: '#fff', letterSpacing: '.1em' }}>24 / 7 / 365 OPERATIONS</span>
+            </div>
             <h2 style={{ fontFamily: "'Outfit',system-ui,sans-serif", fontWeight: 900, fontSize: 'clamp(1.8rem,4vw,2.75rem)', color: '#fff', marginBottom: '1rem' }}>Ready to Ship?</h2>
-            <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '1rem', maxWidth: 480, margin: '0 auto 2rem', lineHeight: 1.7 }}>
+            <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: '1rem', maxWidth: 480, margin: '0 auto 2rem', lineHeight: 1.7 }}>
               Talk to our freight experts — we'll design a solution that fits your cargo, timeline and budget.
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-              <Link to="/contact" className="btn" style={{ background: '#fff', color: '#E8541A', fontFamily: "'Outfit',system-ui,sans-serif" }}>
+              <Link to="/contact" className="btn btn-shine" style={{ background: '#fff', color: '#E8541A', fontFamily: "'Outfit',system-ui,sans-serif" }}>
                 Get a Free Quote <ArrowRight size={15} />
               </Link>
-              <a href="tel:+94115300250" className="btn btn-outline-white">📞 +94 11 530 0250</a>
+              <a href="tel:+94115300250" className="btn btn-outline-white btn-shine">📞 +94 11 530 0250</a>
             </div>
           </Reveal>
         </div>
