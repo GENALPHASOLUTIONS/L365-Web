@@ -14,7 +14,7 @@ function OrbitLogo() {
   return (
     <div className="relative flex items-center">
       <div className="relative">
-        <img src="/logo.png" alt="Logistics 365" className="h-14 w-auto relative z-10" />
+        <img src="/logo.png" alt="Logistics 365" className="h-20 w-auto relative z-10" style={{ minWidth: '200px' }} />
         {/* Orbit ring 1 */}
         <div
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
@@ -76,7 +76,7 @@ export default function Navbar() {
         }
       `}</style>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg py-2' : 'bg-white/95 backdrop-blur-sm py-0'}`}>
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10 flex items-center justify-between h-20">
+        <div className="wrap flex items-center justify-between h-28">
           <Link to="/" className="flex items-center">
             <OrbitLogo />
           </Link>

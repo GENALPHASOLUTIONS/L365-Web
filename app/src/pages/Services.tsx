@@ -37,7 +37,7 @@ export default function Services() {
       <section className="relative pt-32 pb-20 bg-[#0F1923] overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?w=1920&q=80')" }} />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0F1923] to-transparent" />
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-10">
+        <div className="relative z-10 wrap">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-3">What We Do</p>
             <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Our Services</h1>
@@ -48,7 +48,7 @@ export default function Services() {
 
       {/* Services list */}
       <section className="py-20 bg-white">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10 space-y-14">
+        <div className="wrap space-y-14">
           {services.map((s, i) => (
             <motion.div key={s.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} viewport={{ once: true }}
               className={`grid md:grid-cols-2 gap-10 items-center ${i % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''}`}>

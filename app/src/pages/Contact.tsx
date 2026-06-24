@@ -25,7 +25,7 @@ export default function Contact() {
       {/* Hero */}
       <section className="relative pt-32 pb-20 bg-[#0F1923] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0F1923] to-[#0E9B9B]/20" />
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-10">
+        <div className="relative z-10 wrap">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-3">Get In Touch</p>
             <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Contact Us</h1>
@@ -35,7 +35,7 @@ export default function Contact() {
       </section>
 
       <section className="py-20 bg-white">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10 grid md:grid-cols-2 gap-14">
+        <div className="wrap grid md:grid-cols-2 gap-14">
           {/* Info */}
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
             <h2 className="text-2xl font-black text-gray-900 mb-6">Get in Touch</h2>

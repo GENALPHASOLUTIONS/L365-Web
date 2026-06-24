@@ -18,7 +18,7 @@ export default function Network() {
       <section className="relative pt-32 pb-20 bg-[#0F1923] overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=80')" }} />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0F1923] to-transparent" />
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-10">
+        <div className="relative z-10 wrap">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-3">Worldwide Reach</p>
             <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Our Network</h1>
@@ -29,7 +29,7 @@ export default function Network() {
 
       {/* Network image */}
       <section className="py-20 bg-[#F8FAFC]">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10 text-center">
+        <div className="wrap text-center">
           <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-2">Global Presence</p>
           <h2 className="text-3xl font-black text-gray-900 mb-10">Connecting the World</h2>
           <div className="relative rounded-2xl overflow-hidden shadow-xl">
@@ -50,7 +50,7 @@ export default function Network() {
 
       {/* Offices */}
       <section className="py-20 bg-white">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10">
+        <div className="wrap">
           <div className="text-center mb-12">
             <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-2">Our Offices</p>
             <h2 className="text-3xl font-black text-gray-900">Where to Find Us</h2>
@@ -75,7 +75,7 @@ export default function Network() {
 
       {/* Partners */}
       <section className="py-20 bg-[#F8FAFC]">
-        <div className="w-full max-w-6xl mx-auto px-6 md:px-10 text-center">
+        <div className="wrap text-center">
           <p className="text-[#E8541A] font-bold text-sm tracking-widest uppercase mb-2">Trusted By</p>
           <h2 className="text-3xl font-black text-gray-900 mb-10">Our Global Partners</h2>
           <div className="flex flex-wrap justify-center gap-3">

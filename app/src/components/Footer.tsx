@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 export default function Footer() {
   return (
     <footer className="bg-[#0F1923] text-gray-400">
-      <div className="w-full max-w-6xl mx-auto px-6 md:px-10 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="wrap py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-1">
           <img src="/logo.png" alt="Logistics 365" className="h-12 w-auto mb-4 brightness-0 invert" />
           <p className="text-sm leading-relaxed">Seamless Synergy in global freight forwarding. Your cargo, our commitment — 365 days a year.</p>
