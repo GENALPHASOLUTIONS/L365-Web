@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+:root {
+  --orange: #E8541A;
+  --teal: #0E9B9B;
+  --green: #7BC14A;
+  --gray: #6B7280;
+  --dark: #0F1923;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
