@@ -46,18 +46,12 @@ export default function Home() {
       />
 
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80"
-        >
-          <source src="https://www.pexels.com/video/4484936/download/" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0F1923]/90 via-[#0F1923]/70 to-[#0E9B9B]/30" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0F1923]">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1920&q=80')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0F1923]/95 via-[#0F1923]/75 to-[#0E9B9B]/40" />
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
             className="absolute w-96 h-96 rounded-full bg-[#E8541A]/10 blur-3xl"
